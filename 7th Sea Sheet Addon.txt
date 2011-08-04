@@ -1,0 +1,381 @@
+OBJECTS:
+	7sss: 7th Sea Stat System
+
+
+================================================================================
+== Various Formatting Items ====================================================
+
+%0: dbref of sheet
+%1: dbref of player
+
+&F.TINYHEADER 7sss=center(%b[ansi(h, if(comp(%0, ), %0, u(d.dash)))]%b, %1, u(d.dash))
+
+&D.DIV 7sss=ansi(c, %b|%b)
+
+&D.DASH 7sss=ansi(c, -)
+
+
+================================================================================
+== Various Quick Sheet Reference Items =========================================
+
+&SHEET.TRAITS 7sss=[iter(Brawn Finesse Resolve Wits Panache, [ljust(%i0, 8)]: [u(%0/trait.%i0)], , |)]
+
+&SHEET.CHARACTER_INFO 7sss=Full Name %b : [u(%0/bio.full_name)]|Nationality : [u(%0/bio.nation)]|Profession %b: [u(%0/bio.profession)]|Memberships : [udefault(sheet.memberships, None, %0)]|Experience %b: [udefault(%0/bio.experience, 0)]
+
+&SHEET.MEMBERSHIPS 7sss=[itemize(iter(lattr(%0/advantage.membership_%(*%)), titlestr(edit(before(rest(%i0, %(), %)), _, %b)), , |), |)]
+
+&SHEET.ADVANTAGES 7sss=localize([setq(a, lattr(%0/advantage.*))][if(t(%qa), iter(sort(%qa), titlestr(edit(rest(%i0, .), _, %b)), , |), None)])
+
+&SHEET.OTHER.CIVIL 7sss=Arcana: [u(%0/arcana.arcana)][if(t(u(%0/arcana.hubris)), |%b [u(%0/arcana.hubris)] %(Hubris%))][if(t(u(%0/arcana.virtue)), |%b [u(%0/arcana.virtue)] %(Virtue%))]|Reputation: [udefault(%0/bio.reputation, 0,  %0)]|Guilder: [udefault(%0/bio.guilder, 0,  %0)]||Drama Dice: [udefault(%0/bio.drama_dice, 0, %0)][u(sheet.wounds.state, u(%0/wounds.dramatic), u(%0/trait.resolve))]
+
+
+--------------------------------------------------------------------------------
+-- Martial: Defensive Knacks List ----------------------------------------------
+
+passive defense: 5 + (Knack x 5)
+active defense: <wits>+<knack> k <wits>
+
+* Footwork: KNACK.MARTIAL.FOOTWORK KNACK.MARTIAL.FOOTWORK
+* Parry: KNACK.MARTIAL.PARRY_(BUCKLER) KNACK.MARTIAL.PARRY_(IMPROVISED_WEAPON) KNACK.MARTIAL.PARRY_(FENCING) KNACK.MARTIAL.PARRY_(HEAVY_WEAPON) KNACK.MARTIAL.PARRY_(KNIFE) KNACK.MARTIAL.PARRY_(PANZERHAND) KNACK.MARTIAL.PARRY_(POLEARM)
+* Balance: KNACK.CIVIL.BALANCE
+* Climbing: KNACK.CIVIL.CLIMB KNACK.MARTIAL.CLIMB
+* Leaping: KNACK.CIVIL.LEAP KNACK.MARTIAL.LEAP
+* Riding: KNACK.MARTIAL.RIDE_(*)
+* Rolling: KNACK.MARTIAL.ROLL
+* Sprinting: KNACK.MARTIAL.SPRINT
+* Swimming: KNACK.CIVIL.SWIM KNACK.MARTIAL.SWIM
+* Swinging: KNACK.MARTIAL.SWING
+
+%0: sheet dbref
+l: list of knacks matching each item in the list
+
+&SHEET.DEFENSIVE.KNACKS 7sss=
+localize(
+	trim(squish(
+		iter(
+			Footwork Parry_(*) Balance Climb Leap Ride_(*) Roll Sprint Swim Swing, 
+			if(
+				t(setr(l, lattr(%0/knack.*.%i0))), 
+				if(
+					strmatch(%i0, *(*)), 
+@@ .. list all instanced knacks
+					iter(%ql, u(sheet.defensive.knacks.single, %0, %i0), , |), 
+@@ .. but list only the max value of non-instanced knacks
+					u(sheet.defensive.knacks.single, %0, %ql)
+				)
+			), , |
+		)
+	, |), b, |)
+)
+
+
+--
+
+&SHEET.DEFENSIVE.KNACKS 7sss=localize(trim(squish([iter(Footwork Parry_(*) Balance Climb Leap Ride_(*) Roll Sprint Swim Swing, [if(t(setr(l, lattr(%0/knack.*.%i0))), if(strmatch(%i0, *(*)), iter(%ql, u(sheet.defensive.knacks.single, %0, %i0), , |), u(sheet.defensive.knacks.single, %0, %ql)))], , |)], |), b, |))
+
+--
+
+think u(7sss/sheet.defensive.knacks, #407)
+
+
+--------------------------------------------------------------------------------
+-- Martial: Other --------------------------------------------------------------
+
+Wounds, Wound State, Drama Dice
+
+&SHEET.OTHER.MARTIAL 7sss=
+localize(
+	Flesh Wounds: [udefault(%0/wounds.flesh, 0)]|
+	Dramatic Wounds: [setr(w, udefault(%0/wounds.dramatic, 0))]
+	[u(sheet.wounds.state, %qw, u(%0/trait.resolve))]
+	||Drama Dice: [udefault(%0/bio.drama_dice, 0)]
+)
+
+--
+
+&SHEET.OTHER.MARTIAL 7sss=localize(Flesh Wounds: [udefault(%0/wounds.flesh, 0)]|Dramatic Wounds: [setr(w, udefault(%0/wounds.dramatic, 0))][u(sheet.wounds.state, %qw, u(%0/trait.resolve))]||Drama Dice: [udefault(%0/bio.drama_dice, 0)])
+
+
+--------------------------------------------------------------------------------
+-- Support Function: Wounds State ----------------------------------------------
+
+0: dramatic wounds
+1: resolve
+
+&SHEET.WOUNDS.STATE 7sss=[case(1, gte(%0, mul(%1, 2)), |[ansi(y, < Unconscious >)], gte(%0, %1), |[ansi(y, < Crippled >)])]
+
+
+--------------------------------------------------------------------------------
+-- Display one Defensive Knack -------------------------------------------------
+
+%0: sheet dbref
+%1: full.path.of.knack(s)
+
+&SHEET.DEFENSIVE.KNACKS.SINGLE 7sss=
+localize(
+	[setq(v, 
+		if(
+			eq(words(%1, 1)), u(%0/%1), 
+			u(f.lmax, iter(%1, u(%0/%i0)))
+		)
+	)]
+	[setq(n, titlestr(edit(last(first(%1), .), _, %b)))]
+	%qn: [add(5, mul(5, %qv))] / 
+	[add(setr(w, u(%0/trait.wits)), %qv)]k%qw
+)
+
+--
+
+&SHEET.DEFENSIVE.KNACKS.SINGLE 7sss=localize([setq(v, if(eq(words(%1, 1)), u(%0/%1), u(f.lmax, iter(%1, u(%0/%i0)))))][setq(n, titlestr(edit(last(first(%1), .), _, %b)))]%qn: [add(5, mul(5, %qv))] / [add(setr(w, u(%0/trait.wits)), %qv)]k%qw)
+
+--
+
+think u(7sss/sheet.defensive.knacks.single, #407, knack.civil.footwork)
+
+
+--------------------------------------------------------------------------------
+-- Support Function: LMAX -----------------------------------------------------
+
+&f.lmax 7sss=localize([setq(m, first(%0, %1))][iter(rest(%0, %1), setq(m, max(%qm, %i0)), %1, @@)]%qm)
+
+
+--------------------------------------------------------------------------------
+-- Filter: Has Tag -------------------------------------------------------------
+
+Entirely for filtering out civil/martial skills.
+
+0: stat.path
+1: tag
+
+&fil.hastag 7sss=t(match(get(v(d.7sdd)/tags.%0), %1, .))
+
+--
+
+think filter(7sss/fil.hastag, lattr(7sdd/skill.*), , , civil)
+
+think filter(7sss/fil.hastag, lattr(7sdd/skill.*), , , martial)
+
+--------------------------------------------------------------------------------
+-- List all Civil skills -------------------------------------------------------
+
+&SHEET.SKILLS.CIVIL 7sss=
+@@ c: civil skills
+@@ s: swordsman schools
+@@ a: all heritages and skills
+@@ r: rows of 3 we'll have 
+@@ i: item for this column
+
+localize(
+	[setq(c, sort(filter(fil.hastag, lattr(%0/skill.*), , , civil)))]
+	[setq(s, setdiff(lattr(%0/sorcery.*), lattr(%0/sorcery.*.*)))]
+	[u(sheet.skills.section, %0, %qc, %qs)]
+)
+
+---
+
+&SHEET.SKILLS.CIVIL 7sss=localize([setq(c, sort(filter(fil.hastag, lattr(%0/skill.*), , , civil)))][setq(s, setdiff(lattr(%0/sorcery.*), lattr(%0/swordsman.*.*)))][u(sheet.skills.section, %0, %qc, %qs)])
+
+
+--------------------------------------------------------------------------------
+-- List all Martial skills -----------------------------------------------------
+
+&SHEET.SKILLS.MARTIAL 7sss=
+@@ m: martial skills
+@@ s: swordsman schools
+@@ a: all heritages and skills
+@@ r: rows of 3 we'll have 
+@@ i: item for this column
+
+localize(
+	[setq(m, sort(filter(fil.hastag, lattr(%0/skill.*), , , martial)))]
+	[setq(s, setdiff(lattr(%0/swordsman.*), lattr(%0/swordsman.*.*)))]
+	[u(sheet.skills.section, %0, %qm, %qs)]
+)
+
+---
+
+&SHEET.SKILLS.MARTIAL 7sss=localize([setq(m, sort(filter(fil.hastag, lattr(%0/skill.*), , , martial)))][setq(s, setdiff(lattr(%0/swordsman.*), lattr(%0/swordsman.*.*)))][u(sheet.skills.section, %0, %qm, %qs)])
+
+
+--- Process a Skill Section ---
+
+&SHEET.SKILLS.SECTION 7sss=
+@@ %0: Sheet dbref
+@@ %1: General (martial or civil) Skills
+@@ %2: Special (sorcerous or swordsman) Stuff
+
+localize(
+	[setq(a, trim(%2 %1))]
+	[setq(r, ceil(fdiv(words(%qa), 3)))]
+
+@@ a little simple error-check
+	[if(
+		not(comp(%qa, )), 
+		%b[u(f.tinyheader, No Skills to List, 77)], 
+@@ .. one row at a time
+		iter(
+			lnum(%qr), 
+@@ .. .. items for this row
+			[iter(1 2 3, 
+				setq(%i0, extract(%qa, add(%i0, mul(%i1, 3)), 1)), , @@
+			)]
+@@ .. .. headers
+			%b[u(sheet.title.fmt.skill, %q1, 25)]
+			%b[u(sheet.title.fmt.skill, %q2, 26)]
+			%b[u(sheet.title.fmt.skill, %q3, 24)]%r
+@@ .. .. columns
+			[vcolumns(
+				24:[if(t(%q1), u(sheet.skills.column, %0, %q1), %b)], 
+				24:[if(t(%q2), u(sheet.skills.column, %0, %q2), %b)], 
+				24:[if(t(%q3), u(sheet.skills.column, %0, %q3), %b)], 
+				|, u(d.div), %b
+			)], , %r
+		)
+	)]
+)
+
+---
+
+&SHEET.SKILLS.SECTION 7sss=localize([setq(a, trim(%2 %1))][setq(r, ceil(fdiv(words(%qa), 3)))][if(not(comp(%qa, )), %b[u(f.tinyheader, No Skills to List, 77)], iter(lnum(%qr), [iter(1 2 3, setq(%i0, extract(%qa, add(%i0, mul(%i1, 3)), 1)), , @@)]%b[u(sheet.title.fmt.skill, %q1, 25)]%b[u(sheet.title.fmt.skill, %q2, 26)]%b[u(sheet.title.fmt.skill, %q3, 24)]%r[vcolumns(24:[if(t(%q1), u(sheet.skills.column, %0, %q1), %b)], 24:[if(t(%q2), u(sheet.skills.column, %0, %q2), %b)], 24:[if(t(%q3), u(sheet.skills.column, %0, %q3), %b)], |, u(d.div), %b)], , %r))])
+
+
+--- Title for a Skill/Heritage/School ---
+
+&sheet.title.fmt.skill 7sss=
+@@ %0: full.stat.attribute
+@@ %1: width of title
+@@ s: formating fun
+
+localize(
+	[setq(s, titlestr(edit(last(%0, .), _, %b)))]
+	[setq(s, case(first(%0, .), SORCERY, Heritage: %qs, SWORDSMAN, School: %qs, %qs))]
+	[u(f.tinyheader, %qs, %1)]
+)
+
+---
+
+&sheet.title.fmt.skill 7sss=localize([setq(s, titlestr(edit(last(%0, .), _, %b)))][setq(s, case(first(%0, .), SORCERY, Heritage: %qs, SWORDSMAN, School: %qs, %qs))][u(f.tinyheader, %qs, %1)])
+
+
+--- - ---
+
+think u(7sss/sheet.skills.martial, #407)
+think u(7sss/sheet.skills.civil, #407)
+
+
+--------------------------------------------------------------------------------
+-- Prepare a Column of a Skill --
+
+&SHEET.SKILLS.COLUMN 7sss=
+@@ 0: dbref of sheet
+@@ 1: full.stat.attribute
+@@ 
+@@ note: vcolumns() does not like <width>:<null>, so we force it not to be
+
+localize(
+	[setq(k, u(f.sheetknacks.workhorse, %0, [ucstr(%1)]:[u([u(d.7sdd)]/%1)]))]
+	[if(
+		t(%qk), 
+		iter(
+			%qk, 
+			[edit(first(%i0, :), _, %b)]: [rest(%i0, :)], , |
+		), 
+		%b
+	)]
+)
+
+---
+
+&SHEET.SKILLS.COLUMN 7sss=localize([setq(k, u(f.sheetknacks.workhorse, %0, [ucstr(%1)]:[u([u(d.7sdd)]/%1)]))][if(t(%qk), iter(%qk, [edit(first(%i0, :), _, %b)]: [rest(%i0, :)], , |), %b)])
+
+---
+
+think u(7sss/sheet.skills.column, #407, skill.martial.archer)
+
+
+================================================================================
+== SHEET =======================================================================
+
+w: which sheet?  Civil or Martial? (default: Civil)
+p: player whose sheet to check
+s: sheet dbref
+
+---
+
+&c.sheet 7sss=$+sheet*:@pemit %#=
+	[if(
+@@ if sheet requested, 
+		strmatch(strtrunc(%0, 1), /), 
+
+		[setq(w, trim(first(%0), l, /))]
+		[setq(p, trim(rest(%0)))], 
+
+		[setq(w, Civil)][setq(p, trim(%0))]
+	)]
+	[setq(w, grab(|Civil|Martial, %qw*, |))]
+	[setq(p, if(t(%qp), pmatch+(%qp), %#))]
+	[setq(s, u(f.find.sheet, %qp))]
+
+	[case(0, 
+		t(%qp), Who?, 
+		or(u(f.isgm?, %#), strmatch(%#, %qp)), 
+		Can't look at someone else's sheet., 
+		t(%qs), No 7th Sea sheet., 
+		t(%qw), Civil or Martial sheet?, 
+		u(sheet.%qw, %qs, %qp)
+	)]
+
+---
+
+&c.sheet 7sss=$+sheet*:@pemit %#=[if(strmatch(strtrunc(%0, 1), /), [setq(w, trim(first(%0), l, /))][setq(p, trim(rest(%0)))], [setq(w, Civil)][setq(p, trim(%0))])][setq(w, grab(|Civil|Martial, %qw*, |))][setq(p, if(t(%qp), pmatch+(%qp), %#))][setq(s, u(f.find.sheet, %qp))][case(0, t(%qp), Who?, or(u(f.isgm?, %#), strmatch(%#, %qp)), Can't look at someone else's sheet., t(%qs), No 7th Sea sheet., t(%qw), Civil or Martial sheet?, u(sheet.%qw, %qs, %qp))]
+
+
+================================================================================
+== SHEET: CIVIL ================================================================
+
+&SHEET.CIVIL 7sss=
+[header([name(%1)]: Civil Sheet)]%r
+
+@@ .. Traits, Character Information
+%b[u(f.tinyheader, Traits, 16)] [ansi(c, ----, nh, %bCharacter Information%b, c, repeat(-, 33))]%r
+
+[vcolumns(15:[u(sheet.traits, %0)], 59:[u(sheet.character_info, %0, %1)], |, u(d.div), %b)]%r
+
+@@ .. Backgrounds, Advantages, Other
+%b[u(f.tinyheader, Backgrounds, 25)] [u(f.tinyheader, Advantages, 26)] [u(f.tinyheader, Other, 24)]%r
+
+[vcolumns(24:[udefault(%0/bio.background, None, %0)], 24:[u(sheet.advantages, %0)], 24:[u(sheet.other.civil, %0)], |, u(d.div), %b)]%r
+
+@@ .. Skills: Civil
+[u(sheet.skills.civil, %0)]%r
+
+@@ .. Footer
+[footer(Civil)]
+
+---
+
+&SHEET.CIVIL 7sss=[header([name(%1)]: Civil Sheet)]%r%b[u(f.tinyheader, Traits, 16)] [ansi(c, ----, nh, %bCharacter Information%b, c, repeat(-, 33))]%r[vcolumns(15:[u(sheet.traits, %0)], 59:[u(sheet.character_info, %0)], |, u(d.div), %b)]%r%b[u(f.tinyheader, Backgrounds, 25)] [u(f.tinyheader, Advantages, 26)] [u(f.tinyheader, Other, 24)]%r[vcolumns(24:[udefault(%0/bio.background, None, %0)], 24:[u(sheet.advantages, %0)], 24:[u(sheet.other.civil, %0)], |, u(d.div), %b)]%r[u(sheet.skills.civil, %0)]%r[footer(Civil)]
+
+
+================================================================================
+== SHEET: MARTIAL ==============================================================
+
+&SHEET.MARTIAL 7sss=
+[header([name(%1)]: Martial Sheet)]%r
+
+@@ .. Traits, Defensive Knacks, Wounds
+%b[u(f.tinyheader, Traits, 16)] [u(f.tinyheader, Defensive Knacks, 35)] [u(f.tinyheader, Other, 24)]%r
+
+[vcolumns(15:[u(sheet.traits, %0)], 33:[u(sheet.defensive.knacks, %0)], 23:[u(sheet.other.martial, %0)], |, u(d.div), %b)]%r
+
+@@ .. Skills: Civil
+[u(sheet.skills.martial, %0)]%r
+
+@@ .. Footer
+[footer(Martial)]
+
+---
+
+&SHEET.MARTIAL 7sss=[header([name(%1)]: Martial Sheet)]%r%b[u(f.tinyheader, Traits, 16)] [u(f.tinyheader, Defensive Knacks, 35)] [u(f.tinyheader, Other, 24)]%r[vcolumns(15:[u(sheet.traits, %0)], 33:[u(sheet.defensive.knacks, %0)], 23:[u(sheet.other.martial, %0)], |, u(d.div), %b)]%r[u(sheet.skills.martial, %0)]%r[footer(Martial)]
+
+

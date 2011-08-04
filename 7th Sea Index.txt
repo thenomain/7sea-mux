@@ -1,0 +1,20 @@
+Index for the various traits, spells, etc. etc.
+
+@create 7SI: 7th Sea Index
+
+<main thing>.<name>: <book code> <page(s)>[.<book code> <page(s)>], etc.
+
+&trait.brawn 7si=7s xx
+&trait.finesse 7si=7s xx
+&trait.resolve 7si=7s xx
+&trait.wits 7si=7s xx
+&trait.panache 7si=7s xx
+
+
+&skill.artist 7si=7s xx
+
+&knack.dance  7si=7s xx
+
+
+And so on!
+
