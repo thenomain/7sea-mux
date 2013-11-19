@@ -1,9 +1,3 @@
-Best Buy
-Staples
-
-Museumns - Volunteer Coding???
-
--==--=-=-=-=-=
 
 TRAIT: Always a number.
 	&trait.<trait name>: Value
