@@ -36,7 +36,7 @@ Does the person have access to GM-level commands?
 localize(
 	case(
 		1, 
-		not(t(setr(p, pmatch+(%0)))), #-1 Player Not Found, 
+		not(t(setr(p, pmatch(%0)))), #-1 Player Not Found, 
 		not(t(setr(l, get(%qp/_d.sheet)))), #-2 Sheet Not Found, 
 		strmatch(get(%ql/d.player),%qp ), #-3 Sheet Is For Different Player, 
 		%ql
@@ -378,7 +378,7 @@ qf: sheet dbref, or error message
 &ufunc.getstat 7sss=
 	[setq(p, first(%0, /))]
 	[setq(s, rest(%0, /))]
-	[setq(p, pmatch+(%qp))]
+	[setq(p, pmatch(%qp))]
 	[setq(f, u(f.sheet.find, %qp))]
 
 	[case(0, 
@@ -393,7 +393,7 @@ qf: sheet dbref, or error message
 
 --
 
-&ufunc.getstat 7sss=[setq(p, first(%0, /))][setq(s, rest(%0, /))][setq(p, pmatch+(%qp))][setq(f, u(f.sheet.find, %qp))][case(0, t(%qp), #-1 Player Not Found, or(isstaff(%@), u(f.isgm?, %qp), strmatch(%qp, %@)), #-1 GM or Self Only, t(%qf), %qf, u(f.getstat.workhorse, %qp %qs, %qf, %1))]
+&ufunc.getstat 7sss=[setq(p, first(%0, /))][setq(s, rest(%0, /))][setq(p, pmatch(%qp))][setq(f, u(f.sheet.find, %qp))][case(0, t(%qp), #-1 Player Not Found, or(isstaff(%@), u(f.isgm?, %qp), strmatch(%qp, %@)), #-1 GM or Self Only, t(%qf), %qf, u(f.getstat.workhorse, %qp %qs, %qf, %1))]
 
 
 --------------------------------------------------------------------------------
@@ -512,7 +512,7 @@ $+roll*:@pemit %#=
 
 			and(strmatch(%qv, *:*), t(setr(g, u(f.value-trait-or-knack, trim(first(%qv, :)), trim(rest(%qv, :)))))), 
 			[mul(first(%qg, :), 5)]
-			[setq(b, [name(pmatch+(trim(first(%qv, :))))]'s [titlestr(last(%qg, .))])], 
+			[setq(b, [name(pmatch(trim(first(%qv, :))))]'s [titlestr(last(%qg, .))])], 
 
 			strmatch(%qv, *:*), 
 			0, 
@@ -608,7 +608,7 @@ $+roll*:@pemit %#=
 		[iter(
 			%qp, 
 			[if(
-				pmatch+(%i0), 
+				pmatch(%i0), 
 				setq(z, %qz [pmatch(%i0)])
 			)], , @@
 		)]
@@ -646,7 +646,7 @@ $+roll*:@pemit %#=
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==--
 
-&c.roll 7sr=$+roll*:@pemit %#=[setq(i, %0)][setq(s, if(strmatch(%qi, /*), [after(first(%qi), /)][setq(i, rest(%qi))]))][setq(p, if(t(rest(%qi, =)), [rest(%qi, =)] %#[setq(i, before(%qi, =))][setq(q, private)], [lcon(loc(%#), connect)][[setq(q, public)]]))][setq(v, if(t(rest(%qi, vs)), [rest(%qi, vs)][setq(i, before(%qi, vs))], 15))][setq(v, case(1, and(strmatch(%qv, *:*), isint(rest(%qv, :))), mul(rest(%qv, :), 5), and(strmatch(%qv, *:*), t(setr(g, u(f.value-trait-or-knack, trim(first(%qv, :)), trim(rest(%qv, :)))))), [mul(first(%qg, :), 5)][setq(b, [name(pmatch+(trim(first(%qv, :))))]'s [titlestr(last(%qg, .))])], strmatch(%qv, *:*), 0, %qv))][case(1, strmatch(%qi, *+*), [setq(t, case(1, isint(setr(t, trim(first(%qi, +)))), %qt[setq(w, %qt)], not(t(setr(t, u(f.value-trait-or-knack, %#, %qt)), :)), 0[setq(e, rest(%qt))], t(rest(%qt, :)), [first(%qt, :)][setq(w, rest(%qt, :))], 0[setq(e, Unknown Failure for Trait)]))][setq(n, case(1, isint(setr(n, trim(rest(%qi, +)))), %qn[setq(x, %qn)], not(t(setr(n, u(f.value-trait-or-knack, %#, %qn)), :)), 0[setq(e, rest(%qn))], t(rest(%qn, :)), [first(%qn, :)][setq(x, rest(%qn, :))], not(t(%qn)), 0[setq(e, rest(%qn))], 0[setq(e, Unknown Failure for Knack)]))][setq(u, add(%qt, %qn))][setq(k, %qt)], strmatch(%qi, *k*), [setq(u, first(%qi, k))][setq(k, rest(%qi, k))], setq(e, Unknown format))][if(gte(%qu, 10), [setq(k, add(%qk, sub(%qu, 10)))][setq(u, 10)])][setq(k, min(%qu, %qk))][case(1, t(%qe), @@(error: don't even bother), t(match(%qs, no*, /)), [setq(r, ulocal(f.roll.no-explode, %qu))][setq(q, %qq no-explode)], or(t(match(%qs, 0*, /)), t(match(%qs, zero*, /))), [setq(r, ulocal(f.roll.zero, %qu))][setq(q, %qq zero-dice)], setq(r, ulocal(f.roll.explode, %qu)))][setq(r, revwords(sort(%qr)))][case(1, t(%qe), @@(error: don't even bother), setq(r, [extract(%qr, 1, %qk)]|[extract(%qr, inc(%qk), words(%qr))]))][case(1, t(%qe), %qe, [iter(%qp, [if(pmatch+(%i0), setq(z, %qz [pmatch(%i0)]))], , @@)][setq(z, setunion(%qz, ))][pemit(%qz, u(f.output.roll))])]
+&c.roll 7sr=$+roll*:@pemit %#=[setq(i, %0)][setq(s, if(strmatch(%qi, /*), [after(first(%qi), /)][setq(i, rest(%qi))]))][setq(p, if(t(rest(%qi, =)), [rest(%qi, =)] %#[setq(i, before(%qi, =))][setq(q, private)], [lcon(loc(%#), connect)][[setq(q, public)]]))][setq(v, if(t(rest(%qi, vs)), [rest(%qi, vs)][setq(i, before(%qi, vs))], 15))][setq(v, case(1, and(strmatch(%qv, *:*), isint(rest(%qv, :))), mul(rest(%qv, :), 5), and(strmatch(%qv, *:*), t(setr(g, u(f.value-trait-or-knack, trim(first(%qv, :)), trim(rest(%qv, :)))))), [mul(first(%qg, :), 5)][setq(b, [name(pmatch(trim(first(%qv, :))))]'s [titlestr(last(%qg, .))])], strmatch(%qv, *:*), 0, %qv))][case(1, strmatch(%qi, *+*), [setq(t, case(1, isint(setr(t, trim(first(%qi, +)))), %qt[setq(w, %qt)], not(t(setr(t, u(f.value-trait-or-knack, %#, %qt)), :)), 0[setq(e, rest(%qt))], t(rest(%qt, :)), [first(%qt, :)][setq(w, rest(%qt, :))], 0[setq(e, Unknown Failure for Trait)]))][setq(n, case(1, isint(setr(n, trim(rest(%qi, +)))), %qn[setq(x, %qn)], not(t(setr(n, u(f.value-trait-or-knack, %#, %qn)), :)), 0[setq(e, rest(%qn))], t(rest(%qn, :)), [first(%qn, :)][setq(x, rest(%qn, :))], not(t(%qn)), 0[setq(e, rest(%qn))], 0[setq(e, Unknown Failure for Knack)]))][setq(u, add(%qt, %qn))][setq(k, %qt)], strmatch(%qi, *k*), [setq(u, first(%qi, k))][setq(k, rest(%qi, k))], setq(e, Unknown format))][if(gte(%qu, 10), [setq(k, add(%qk, sub(%qu, 10)))][setq(u, 10)])][setq(k, min(%qu, %qk))][case(1, t(%qe), @@(error: don't even bother), t(match(%qs, no*, /)), [setq(r, ulocal(f.roll.no-explode, %qu))][setq(q, %qq no-explode)], or(t(match(%qs, 0*, /)), t(match(%qs, zero*, /))), [setq(r, ulocal(f.roll.zero, %qu))][setq(q, %qq zero-dice)], setq(r, ulocal(f.roll.explode, %qu)))][setq(r, revwords(sort(%qr)))][case(1, t(%qe), @@(error: don't even bother), setq(r, [extract(%qr, 1, %qk)]|[extract(%qr, inc(%qk), words(%qr))]))][case(1, t(%qe), %qe, [iter(%qp, [if(pmatch(%i0), setq(z, %qz [pmatch(%i0)]))], , @@)][setq(z, setunion(%qz, ))][pemit(%qz, u(f.output.roll))])]
 
 &f.roll.no-explode  7sr=lrand(1, 10, %0)
 &f.roll.explode  7sr=iter(lrand(1, 10, %0), ulocal(f.roll.reroll-checker, %i0))
@@ -741,14 +741,14 @@ The dbref of a sheet is always found via the &sheet.7s attribute on someone
 &f.find.sheet 7sss=
 localize(
 	case(1, 
-		not(t(setr(p, pmatch+(%0)))), #-1 Player Not Found, 
+		not(t(setr(p, pmatch(%0)))), #-1 Player Not Found, 
 		not(t(setr(l, u(%qp/_sheet.7s)))), #-1 Sheet Not Found, 
 		%ql
 	)
 )
 
 
-&f.find.sheet 7sss=localize(case(1, not(t(setr(p, pmatch+(%0)))), #-1 Player Not Found, not(t(setr(l, u(%qp/_sheet.7s)))), #-1 Sheet Not Found, %ql))
+&f.find.sheet 7sss=localize(case(1, not(t(setr(p, pmatch(%0)))), #-1 Player Not Found, not(t(setr(l, u(%qp/_sheet.7s)))), #-1 Sheet Not Found, %ql))
 
 -- Checkers --------------------------------------------------------------------
 
@@ -1198,7 +1198,7 @@ if(
 	not(u(f.isgm?, %#)), 
 	Error: You're not a 7th Seas GM!, 
 
-	[setq(p, pmatch+(trim(%1)))]
+	[setq(p, pmatch(trim(%1)))]
 	[setq(s, ucstr(edit(trim(%2), %b, _)))]
 	[setq(o, trim(%3))]
 	[setq(v, trim(%4))]
@@ -1222,7 +1222,7 @@ if(
 ---
 
 
-&c.set 7sss=$\+set (.+?)/(.+?)([+\-=])(.*):@pemit %#=if(not(u(f.isgm?, %#)), Error: You're not a 7th Seas GM!, [setq(p, pmatch+(trim(%1)))][setq(s, ucstr(edit(trim(%2), %b, _)))][setq(o, trim(%3))][setq(v, trim(%4))][setq(r, case(1, t(match(+ -, %qo)), u(f.shiftstat, %qp, %qs, %qo%qv), t(setr(r, u(f.setstatpath, %qp, %qs, %qv))), %qr, u(f.setstat, %qp, %qs, %qv)))][if(not(t(%qr)), Error: [rest(%qr)], Set [name(%qp)]'s [edit(edit(titlestr(edit(edit(first(%qr, :), ., %b.%b), _, %b)), %b.%b, .), %b, _)] to [u([u(f.find.sheet, %qp)]/[first(%qr, :)])])])
+&c.set 7sss=$\+set (.+?)/(.+?)([+\-=])(.*):@pemit %#=if(not(u(f.isgm?, %#)), Error: You're not a 7th Seas GM!, [setq(p, pmatch(trim(%1)))][setq(s, ucstr(edit(trim(%2), %b, _)))][setq(o, trim(%3))][setq(v, trim(%4))][setq(r, case(1, t(match(+ -, %qo)), u(f.shiftstat, %qp, %qs, %qo%qv), t(setr(r, u(f.setstatpath, %qp, %qs, %qv))), %qr, u(f.setstat, %qp, %qs, %qv)))][if(not(t(%qr)), Error: [rest(%qr)], Set [name(%qp)]'s [edit(edit(titlestr(edit(edit(first(%qr, :), ., %b.%b), _, %b)), %b.%b, .), %b, _)] to [u([u(f.find.sheet, %qp)]/[first(%qr, :)])])])
 
 @set 7sss/c.set=regexp
 
