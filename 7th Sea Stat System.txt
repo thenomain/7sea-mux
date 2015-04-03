@@ -33,13 +33,12 @@ Does the person have access to GM-level commands?
 -- Function: Find Player's Sheet -----------------------------------------------
 
 &f.sheet.find 7sss=
-localize(
-	case(
-		1, 
-		not(t(setr(p, pmatch(%0)))), #-1 Player Not Found, 
-		not(t(setr(l, get(%qp/_d.sheet)))), #-2 Sheet Not Found, 
-		strmatch(get(%ql/d.player),%qp ), #-3 Sheet Is For Different Player, 
-		%ql
+localize( 
+	case( 0, 
+		t( setr( p, pmatch( %0 ))), #-1 Player Not Found, 
+		t( setr( l, get( %qp/_d.sheet ))), #-2 Sheet Not Found, 
+		strmatch( get( %ql/d.player ),%qp ), #-3 Sheet Is For Different Player, 
+		%ql 
 	)
 )
 

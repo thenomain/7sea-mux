@@ -314,7 +314,7 @@ s: sheet dbref
 	)]
 	[setq(w, grab(|Civil|Martial, %qw*, |))]
 	[setq(p, if(t(%qp), pmatch(%qp), %#))]
-	[setq(s, u(f.find.sheet, %qp))]
+	[setq(s, u(f.sheet.find, %qp))]
 
 	[case(0, 
 		t(%qp), Who?, 
@@ -327,7 +327,7 @@ s: sheet dbref
 
 ---
 
-&c.sheet 7sss=$+sheet*:@pemit %#=[if(strmatch(strtrunc(%0, 1), /), [setq(w, trim(first(%0), l, /))][setq(p, trim(rest(%0)))], [setq(w, Civil)][setq(p, trim(%0))])][setq(w, grab(|Civil|Martial, %qw*, |))][setq(p, if(t(%qp), pmatch(%qp), %#))][setq(s, u(f.find.sheet, %qp))][case(0, t(%qp), Who?, or(u(f.isgm?, %#), strmatch(%#, %qp)), Can't look at someone else's sheet., t(%qs), No 7th Sea sheet., t(%qw), Civil or Martial sheet?, u(sheet.%qw, %qs, %qp))]
+&c.sheet 7sss=$+sheet*:@pemit %#=[if(strmatch(strtrunc(%0, 1), /), [setq(w, trim(first(%0), l, /))][setq(p, trim(rest(%0)))], [setq(w, Civil)][setq(p, trim(%0))])][setq(w, grab(|Civil|Martial, %qw*, |))][setq(p, if(t(%qp), pmatch(%qp), %#))][setq(s, u(f.sheet.find, %qp))][case(0, t(%qp), Who?, or(u(f.isgm?, %#), strmatch(%#, %qp)), Can't look at someone else's sheet., t(%qs), No 7th Sea sheet., t(%qw), Civil or Martial sheet?, u(sheet.%qw, %qs, %qp))]
 
 
 ================================================================================
