@@ -1,4 +1,6 @@
+/*
 Index for the various traits, spells, etc. etc.
+Far from complete.
 
 @create 7SI: 7th Sea Index
 
@@ -18,3 +20,4 @@ Index for the various traits, spells, etc. etc.
 
 And so on!
 
+*/

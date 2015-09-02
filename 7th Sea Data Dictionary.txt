@@ -1,4 +1,4 @@
-
+/*
 TRAIT: Always a number.
 	&trait.<trait name>: Value
 KNACK: Always a number, not stored in the DD except in relation to skills.
@@ -41,7 +41,9 @@ ADVANTAGES: A bunch of stuff
 OBJECTS:
 	7SDD: 7th Sea Data Dictionary
 
+================================================================================
 == TRAITS ======================================================================
+*/
 
 &trait.brawn 7sdd=1
 &trait.finesse 7sdd=1
@@ -51,14 +53,18 @@ OBJECTS:
 
 &prefix.traits 7sdd=trait.
 
+/*
+================================================================================
 == SKILLS ======================================================================
 
 	skill.<name>: <list.of.basic>|<list.of.advanced>
 
--- Civil -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Skills: Civil ---------------------------------------------------------------
+*/
 
 &skill.artist 7sdd=Compose.Draw.Musician (*).Sculpt.Sing.Write
-@@ &chargen.skill.civil.artist 7sdd=Pick one Basic at 2 only
+// &chargen.skill.civil.artist 7sdd=Pick one Basic at 2 only
 &tags.skill.artist 7sdd=civil
 
 &skill.courtier 7sdd=Dance.Etiquette.Fashion.Oratory|Diplomacy.Games.Gossip.Lip Read.Memorize.Mooch.Politics.Scheme.Seduction.Sincerity
@@ -71,11 +77,11 @@ OBJECTS:
 &tags.skill.doctor 7sdd=civil
 
 &skill.hunter 7sdd=Fisher.Skinner.Stealth.Survival.Track.Trail Signs.Traps|Ambush.Animal Train
-@@ &chargen.skill.civil.hunter 7sdd=Pick 3 Basic at 1 only
+// &chargen.skill.civil.hunter 7sdd=Pick 3 Basic at 1 only
 &tags.skill.hunter 7sdd=civil
 
 &skill.merchant 7sdd=Barber.Blacksmith.Butcher.Calligrapher.Ceramics.Chandler.Cooking.Cooper.Dying.Embalmer.Fletcher.Furrier.Gardener.Glassblower.Innkeeper.Jenny.Jeweler.Masseur.Miller.Paper Maker.Potter.Sail Maker.Scribe.Seamstress.Spinner.Steward.Tailor.Vintner.Weaver|Accounts.Appraise. Architecture.Bartender.Haggle.Tinker
-@@ &chargen.skill.civil.merchant 7sdd=Pick one Basic at 2 only
+// &chargen.skill.civil.merchant 7sdd=Pick one Basic at 2 only
 &tags.skill.merchant 7sdd=civil
 
 
@@ -98,7 +104,10 @@ OBJECTS:
 &tags.skill.streetwise 7sdd=civil
 
 
--- Marital ---------------------------------------------------------------------
+/*
+--------------------------------------------------------------------------------
+-- Skills: Marital -------------------------------------------------------------
+*/
 
 &skill.archer 7sdd=Attack (Bow).Fletcher|Horse Archery.Snapshot.Trick Shot
 &tags.skill.archer 7sdd=martial
@@ -146,11 +155,13 @@ OBJECTS:
 &tags.skill.wrestling 7sdd=martial
 
 
---
+// --
 
 &prefix.skills_and_knacks 7sdd=skill. tags.skill.
 
 
+/*
+================================================================================
 == SORCERY =====================================================================
 
 30pts for half-blooded, 40 for full-blooded or twice-blooded|You have a sorcerous knack.
@@ -161,7 +172,7 @@ I'm not sure how I'd use this on a game that needs offsets.  Hmm.
 
 	sorcery.<name>: <list.of.spells>
 
---
+*/
 
 &bio.sorcerous_blood 7sdd=full-blooded.half-blooded.twice-blooded
 &tags.bio.sorcerous_blood 7sdd=sorcery
@@ -169,7 +180,7 @@ I'm not sure how I'd use this on a game that needs offsets.  Hmm.
 &bio.heritage 7sdd=[iter(lattr(%i0/sorcery.*), rest(%i0, .), , .)]
 &tags.bio.heritage 7sdd=sorcery
 
---
+// --
 
 &sorcery.glamour 7sdd=The Horned Hunter.Robin Goodfellow.Jack.The Green Man.Thomas
 
@@ -181,11 +192,13 @@ I'm not sure how I'd use this on a game that needs offsets.  Hmm.
 
 &sorcery.sorte 7sdd=Arcana.Coins.Cups.Staves.Swords
 
---
+// --
 
 &prefix.sorcery 7sdd=bio.heritage tags.bio.heritage derived.bio.degree bio.degree tags.bio.degree derived.bio.degree sorcery.
 
 
+/*
+================================================================================
 == SWORDSMAN ===================================================================
 
 The swordsman.<school> notation is: Free SKILLS|Fencing KNACKS.  What can ya do.
@@ -194,12 +207,12 @@ The swordsman.<school> notation is: Free SKILLS|Fencing KNACKS.  What can ya do.
 
 	swordsman.<school>: <list.of.skills>|<list.of.advanced.knacks>
 
---
+*/
 
 &bio.school 7sdd=[iter(lattr(%i0/swordsman.*), rest(%i0, .), , .)]
 &tags.bio.school 7sdd=swordsman
 
---
+// --
 
 &swordsman.aldana 7sdd=Courier.Fencing|Feint (Fencing).Riposte (Fencing).Tagging (Fencing).Exploit Weakness (Aldana)
 
@@ -213,18 +226,20 @@ The swordsman.<school> notation is: Free SKILLS|Fencing KNACKS.  What can ya do.
 
 &swordsman.valroux 7sdd=Fencing.Knife|Double-parry (Fencing/Knife).Feint (Fencing).Tagging (Fencing).Exploit Weakness (Valroux)
 
---
+// --
 
 &prefix.swordsman 7sdd=bio.swordsman tags.bio.swordsman bio.rank tags.bio.rank swordsman.
 
 
+/*
+================================================================================
 == OTHER ADVANTAGES ============================================================
 
 All advantages are formatted: <cost/notes about cost>|<summary of advantage>
 
 I'll work on standardizing these later, notes may go on another object.
 
---
+*/
 
 &advantage.able_drinker 7sdd=1|However much you drink, liquor never effects your rolls.
 &advantage.academy 7sdd=4, 2 for Eisen|You have attended a military academy and buy Marital skills at 1 instead of 2 during character generation.
@@ -257,11 +272,14 @@ I'll work on standardizing these later, notes may go on another object.
 &advantage.toughness 7sdd=5, 3 for Ussuran|+1 die on all wound checks
 &advantage.university 7sdd=4, 2 for Castillian|Buy Civil skills at 1 instead of 2 at character generation
 
---
+// --
 
 &prefix.needs_worked_on 7sdd=advantage.
 
+/*
+================================================================================
 == ARCANA ======================================================================
+*/
 
 &arcana.arcana 7sdd=Fool.Magician.High Priestess.Empress.Imperator.Hierophant.Lovers.Chariot.Strength.Hermit.Fortune.Justice.Hanged Man.Death.Temperence.Legion.Tower.Star.Moon.Sun.Judgement.Terra
 
@@ -271,7 +289,10 @@ I'll work on standardizing these later, notes may go on another object.
 
 &prefix.arcanum 7sdd=arcana.
 
+/*
+================================================================================
 == BIO =========================================================================
+*/
 
 &bio.nation 7sdd=Avalon.Castille.Eisen.Montaigne.Ussura.Vendel.Vodacce
 
@@ -296,10 +317,10 @@ I'll work on standardizing these later, notes may go on another object.
 &prefix.bio 7sdd=bio.
 
 
--=-=-=-=-=-=-=-==--==--==--=-=-=-=
-
+/*
 ================================================================================
 == BOOK: CASTILLE ==============================================================
+*/
 
 @fo me=&sorcery.heritage 7sdd=[get(7sdd/sorcery.heritage)].El Fuego Adentro
 &sorcery.el_fuego_adentro 7sdd=Concentrate.Extinguish.Feed.Range.Stunt (*)
@@ -311,14 +332,20 @@ I'll work on standardizing these later, notes may go on another object.
 &swordsman.gallegos 7sdd=Athelete.Fencing|Feint (Fencing).Riposte (Fencing).Tagging (Fencing).Exploit Weakness (Gallegos)
 
 
-== BOOK: EISEN =======================================
+/*
+================================================================================
+== BOOK: EISEN =================================================================
+*/
 
 &advantage.eisen_bodyguard 7sdd=6, 5 if Eisen|A bodyguard with an Eisen Swordsman school and 75 points.  One's loyalty only goes so far.
 
 @fo me=&swordsman.school 7sdd=[get(7sdd/swordsman.school)].Steil
 &swordsman.steil 7sdd=Commander.Courtier|Orders (*)
 
-== BOOK: AVALON =======================================
+/*
+================================================================================
+== BOOK: AVALON ================================================================
+*/
 
 &advantage.sidhe_blade 7sdd=Varies, Avalon p. 94, 1 less with Sidhe Blood and Good Standing|Heroes of the sidhe are allowed a blade.
 
@@ -327,12 +354,18 @@ I'll work on standardizing these later, notes may go on another object.
 &advantage.sidhe_ally 7sdd=2|You have a sidhe ally. This may not bode well for you.
 
 
-== BOOK: RILASCIARE (Secret Society) ====================
+/*
+================================================================================
+== BOOK: RILASCIARE (Secret Society) ===========================================
+*/
 
 &advantage.uppmans_coat 7sdd=2|Membership (Rilasciare) only.  A coat with a hidden pocket with something hidden in it.  Page 87.
 
 
-== BOOK: PIRATE NATIONS =============================
+/*
+================================================================================
+== BOOK: PIRATE NATIONS ========================================================
+*/
 
 &skill.martial.captain 7sdd=Strategy.Tactics|Ambush.Bribery.Cartography.Diplomacy.Gunnery.Incitation.Leadership.Logistics
 
@@ -341,7 +374,8 @@ I'll work on standardizing these later, notes may go on another object.
 &advantage.syrneth_artifact_() 7sdd=Variable (Pirate Nations, p. 96)|Your character has found a syrneath artifact
 
 
-== BOOK: VENDEL/VESTEN ====================================
+======================= BOOK: VENDEL/VESTEN =========================================================
+*/
 
 @fo me=&swordsman.school 7sdd=[get(7sdd/swordsman.school)].Siggursdottir
 &swordsman.siggursdottir 7sdd=Athlete.Hand Axe|Double Attack (Hand Axe).Exploit Weakness (Siggursdottir).Throw (Hand Axe).Whirl (Hand Axe)
@@ -349,6 +383,7 @@ I'll work on standardizing these later, notes may go on another object.
 
 
 
+/*
 =--=-=-=-=-=-=-=-=-=-=-=
 
 ********* OLD VERSION  ***********
@@ -366,31 +401,32 @@ OBJECTS:
 &trait.wits 7sdd=1
 &trait.panache 7sdd=1
 
-== SKILLS =============================
+// == SKILLS =============================
 
-Skills commented out with @@ are from non-core sources
+// Skills commented out with // are from non-core sources
+// They should get their own 'dd' file
 
--- Civil ------------------------------
+// -- Civil ------------------------------
 
-@@ &skill.civil.acrobat 7sdd=Balance.Footwork|Break Fall.Circus.Contortion.Juggle.Leap.Lift.Roll.Stunt.Swing
+// &skill.civil.acrobat 7sdd=Balance.Footwork|Break Fall.Circus.Contortion.Juggle.Leap.Lift.Roll.Stunt.Swing
 
-@@ &skill.civil.alchemy 7sdd=Research|Natural Philosophy.Occult.Poison
+// &skill.civil.alchemy 7sdd=Research|Natural Philosophy.Occult.Poison
 
-@@ &skill.civil.archaeologist 7sdd=Explorer's Society Lore.Occult.Research|Artifact Evaluation.Syrneth Lore.Syrneth Trap Lore
-@@ &restriction.skill.civil.archaeologist 7sdd=Explorer's Society only
+// &skill.civil.archaeologist 7sdd=Explorer's Society Lore.Occult.Research|Artifact Evaluation.Syrneth Lore.Syrneth Trap Lore
+// &restriction.skill.civil.archaeologist 7sdd=Explorer's Society only
 
-@@ &skill.civil.arson 7sdd=Mathematics.Street Navigation (*)|Architecture.Cartography.Conceal.Natural Philosophy
+// &skill.civil.arson 7sdd=Mathematics.Street Navigation (*)|Architecture.Cartography.Conceal.Natural Philosophy
 
 &skill.civil.artist 7sdd=Compose.Draw.Musician (*).Sculpt.Sing.Write
-@@ &chargen.skill.civil.artist 7sdd=Pick one Basic at 2 only
+// &chargen.skill.civil.artist 7sdd=Pick one Basic at 2 only
 
-@@ &skill.civil.bard 7sdd=Etiquette.History.Oratory.Sing|Diplomacy.Herb Lore.Riddles.Sidhe Lore
+// &skill.civil.bard 7sdd=Etiquette.History.Oratory.Sing|Diplomacy.Herb Lore.Riddles.Sidhe Lore
 
-@@ &skill.civil.bomb-making 7sdd=Blacksmith.Cooper.Mathematics|Fuses.Natural Philosophy.Poison
+// &skill.civil.bomb-making 7sdd=Blacksmith.Cooper.Mathematics|Fuses.Natural Philosophy.Poison
 
-@@ &skill.civil.courtesan 7sdd=Act.Dance.Etiquette.Fashion.Jenny.Masseur.Unobtrusive|Cold Read.Conceal.Gossip.Mooch.Poison.Politics.Scheme.Seduction.Sincerity
-@@ &restriction.skill.civil.courtesan 7sdd=Women only
-@@ &chargen.skill.civil.courtesan 7sdd=Pick one Basic at 3 only
+// &skill.civil.courtesan 7sdd=Act.Dance.Etiquette.Fashion.Jenny.Masseur.Unobtrusive|Cold Read.Conceal.Gossip.Mooch.Poison.Politics.Scheme.Seduction.Sincerity
+// &restriction.skill.civil.courtesan 7sdd=Women only
+// &chargen.skill.civil.courtesan 7sdd=Pick one Basic at 3 only
 
 &skill.civil.courtier 7sdd=Dance.Etiquette.Fashion.Oratory|Diplomacy.Games.Gossip.Lip Read.Memorize.Mooch.Politics.Scheme.Seduction.Sincerity
 
@@ -398,46 +434,46 @@ Skills commented out with @@ are from non-core sources
 
 &skill.civil.doctor 7sdd=Diagnosis.First Aid|Dentist.Examiner.Quack.Surgery.Veterinarian
 
-@@ &skill.civil.engineer 7sdd=Architecture.Draftsman.Mathematics|Accounts.Cannonsmith.Natural Philosophy
+// &skill.civil.engineer 7sdd=Architecture.Draftsman.Mathematics|Accounts.Cannonsmith.Natural Philosophy
 
-@@ &skill.civil.falconer 7sdd=Bird Handler|Animal Train
+// &skill.civil.falconer 7sdd=Bird Handler|Animal Train
 
-@@ &skill.civil.fence 7sdd=Appraise.Socialize (*)|Haggle.Shopper (*).Underworld Lore (*)
+// &skill.civil.fence 7sdd=Appraise.Socialize (*)|Haggle.Shopper (*).Underworld Lore (*)
 
-@@ &skill.civil.forger 7sdd=Calligrapher.Forgery.Papermaker.Research|Conceal.Cryptography
+// &skill.civil.forger 7sdd=Calligrapher.Forgery.Papermaker.Research|Conceal.Cryptography
 
-@@ &skill.civil.fortune_telling 7sdd=Oratory.Palm Read|Bones.Card Read.Cold Read.Haggle.Occult.Omens
+// &skill.civil.fortune_telling 7sdd=Oratory.Palm Read|Bones.Card Read.Cold Read.Haggle.Occult.Omens
 
-@@ &skill.civil.guide 7sdd=Street Navigation (*).Climb.Ride (*).Stealth.Street Navigation (*).Survival.Track.Trail Signs|Ambush.Cartography.Direction Sense.Navigation.Swim
-@@ &chargen.skill.civil.guide 7sdd=Pick 2 basic knacks that aren't "Navigation" at Rank 1
+// &skill.civil.guide 7sdd=Street Navigation (*).Climb.Ride (*).Stealth.Street Navigation (*).Survival.Track.Trail Signs|Ambush.Cartography.Direction Sense.Navigation.Swim
+// &chargen.skill.civil.guide 7sdd=Pick 2 basic knacks that aren't "Navigation" at Rank 1
 
-@@ &skill.civil.herbalist 7sdd=Cooking.Diagnosis.First Aid.Flora|Compounds.Poison.Quack
+// &skill.civil.herbalist 7sdd=Cooking.Diagnosis.First Aid.Flora|Compounds.Poison.Quack
 
 &skill.civil.hunter 7sdd=Fisher.Skinner.Stealth.Survival.Track.Trail Signs.Traps|Ambush.Animal Train
-@@ &chargen.skill.civil.hunter 7sdd=Pick 3 Basic at 1 only
+// &chargen.skill.civil.hunter 7sdd=Pick 3 Basic at 1 only
 
 &skill.civil.merchant 7sdd=Barber.Blacksmith.Butcher.Calligrapher.Ceramics.Chandler.Cooking.Cooper.Dying.Embalmer.Fletcher.Furrier.Gardener.Glassblower.Innkeeper.Jenny.Jeweler.Masseur.Miller.Paper Maker.Potter.Sail Maker.Scribe.Seamstress.Spinner.Steward.Tailor.Vintner.Weaver|Accounts.Appraise. Architecture.Bartender.Haggle.Tinker
-@@ &chargen.skill.civil.merchant 7sdd=Pick one Basic at 2 only
+// &chargen.skill.civil.merchant 7sdd=Pick one Basic at 2 only
 
-@@ &skill.civil.missionary 7sdd=Oratory.Philosophy.Survival|Cold Read.Diplomacy.Theology
-@@ &restriction.skill.civil.missionary 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
+// &skill.civil.missionary 7sdd=Oratory.Philosophy.Survival|Cold Read.Diplomacy.Theology
+// &restriction.skill.civil.missionary 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
 
-@@ &skill.civil.monk 7sdd=Calligraphy.Menial Tasks.Philosophy.Write|Compounds.Seneschal.Theology
-@@ &restriction.skill.civil.monk 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
+// &skill.civil.monk 7sdd=Calligraphy.Menial Tasks.Philosophy.Write|Compounds.Seneschal.Theology
+// &restriction.skill.civil.monk 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
 
-@@ &skill.civil.nun 7sdd=Calligraphy.Menial Tasks.Philosophy.Write|Compounds.Seneschal.Theology
-@@ &restriction.skill.civil.nun 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
+// &skill.civil.nun 7sdd=Calligraphy.Menial Tasks.Philosophy.Write|Compounds.Seneschal.Theology
+// &restriction.skill.civil.nun 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
 
 &skill.civil.performer 7sdd=Act.Dance.Oratory.Sing|Animal Train.Circus.Cold Read.Disguise.Juggling.Memorize.Prestidigitation.Shill.Storyteller
 
-@@ &skill.civil.politician 7sdd=Diplomacy.Sincerity.Oratory.Politics|Demagoguery.Intrigue
+// &skill.civil.politician 7sdd=Diplomacy.Sincerity.Oratory.Politics|Demagoguery.Intrigue
 
-@@ &skill.civil.priest 7sdd=Oratory.Philosophy.Write|Diplomacy.Mooch.Theology
-@@ &restriction.skill.civil.priest 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
+// &skill.civil.priest 7sdd=Oratory.Philosophy.Write|Diplomacy.Mooch.Theology
+// &restriction.skill.civil.priest 7sdd=Pick only one Skill of Missionary, Monk, Nun, or Priest
 
-@@ &skill.civil.professor 7sdd=Oratory.Research.Write|Law.Mooch.Natural Philosophy.Occult.Politics.Theology.Tinker
+// &skill.civil.professor 7sdd=Oratory.Research.Write|Law.Mooch.Natural Philosophy.Occult.Politics.Theology.Tinker
 
-@@ &skill.civil.riverboat_pilot 7sdd=Balance.Knotwork.Rigging.River Navigation (*)|Ambush.Bribery.Cartography.Diplomacy.Pilot.Swim.Weather
+// &skill.civil.riverboat_pilot 7sdd=Balance.Knotwork.Rigging.River Navigation (*)|Ambush.Bribery.Cartography.Diplomacy.Pilot.Swim.Weather
 
 &skill.civil.sailor 7sdd=Balance.Climb.Knotwork.Rigging|Cartography.Leap.Navigation.Pilot.Sea Lore.Swim.Weather
 
@@ -445,35 +481,35 @@ Skills commented out with @@ are from non-core sources
 
 &skill.civil.servant 7sdd=Etiquette.Fashion.Menial Tasks.Unobtrusive|Accounts.Drive Carriage.Drive Sleigh.Gossip.Haggle.Seneschal.Valet 
 
-@@ &skill.civil.skald 7sdd=History.Oratory.Sing.Write|Diplomacy.Incitation.Riddles.Rune Lore.Storyteller.Theology
-@@ &restriction.skill.civil.skald 7sdd=Vesten only
+// &skill.civil.skald 7sdd=History.Oratory.Sing.Write|Diplomacy.Incitation.Riddles.Rune Lore.Storyteller.Theology
+// &restriction.skill.civil.skald 7sdd=Vesten only
 
 &skill.civil.spy 7sdd=Shadow.Stealth|Bribery.Conceal.Cryptography.Disguise.Forgery.Hand Signs.Interrogation.Lip Read.Memorize.Poison.Sincerity
 
 &skill.civil.streetwise 7sdd=Socialize.Street Navigation|Scrounge.Shopper.Underworld Lore
 
-@@ &skill.civil.teacher 7sdd=Oratory.Research.Write|Cold Read.Incitation.Leadership.Storytelling.Train
+// &skill.civil.teacher 7sdd=Oratory.Research.Write|Cold Read.Incitation.Leadership.Storytelling.Train
 
-@@ &skill.civil.urchin 7sdd=Stealth.Street Navigation (*).Survival|Conceal.Pickpocket.Scrounge (*).Sincerity
+// &skill.civil.urchin 7sdd=Stealth.Street Navigation (*).Survival|Conceal.Pickpocket.Scrounge (*).Sincerity
 
-@@ &skill.civil.waylay 7sdd=Lie in Wait.Set Traps.Shadow|Ambush.Camouflage.Land On Target.Snatch and Grab
+// &skill.civil.waylay 7sdd=Lie in Wait.Set Traps.Shadow|Ambush.Camouflage.Land On Target.Snatch and Grab
 
-@@ &skill.civil.whaler 7sdd=Balance.Knotwork.Throw (Harpoon)|Leap.Pilot.Poison.Sea Lore.Swim.Weather
+// &skill.civil.whaler 7sdd=Balance.Knotwork.Throw (Harpoon)|Leap.Pilot.Poison.Sea Lore.Swim.Weather
 
 
--- Marital ----------------------------
+// -- Marital ----------------------------
 
 &skill.martial.archer 7sdd=Attack (Bow).Fletcher|Horse Archery.Snapshot.Trick Shot
 
 &skill.martial.athlete 7sdd=Climb.Footwork.Sprint.Throwing|Breakfall.Leap.Lift.Long-Distance Run.Pole Vault.Roll.Swim.Swing.Side-step
 
-@@ &skill.martial.bodyguard 7sdd=Interpose, Shadow, Unobtrusive|Ambush, Cold Read, Conceal, Menace
+// &skill.martial.bodyguard 7sdd=Interpose, Shadow, Unobtrusive|Ambush, Cold Read, Conceal, Menace
 
 &skill.martial.buckler 7sdd=Parry (Buckler)|Attack (Buckler)
 
-@@ &skill.martial.captain 7sdd=Strategy, Tactics|Ambush, Bribery, Cartography, Diplomacy, Gunnery, Incitation, Leadership, Logistics
+// &skill.martial.captain 7sdd=Strategy, Tactics|Ambush, Bribery, Cartography, Diplomacy, Gunnery, Incitation, Leadership, Logistics
 
-@@ &skill.martial.cloak 7sdd=Parry (Cloak)|Entangle
+// &skill.martial.cloak 7sdd=Parry (Cloak)|Entangle
 
 &skill.martial.commander 7sdd=Strategy.Tactics|Ambush.Artillery.Cartography.Diplomacy.Gunnery.Incitation.Leadership.Logistics
 
@@ -485,7 +521,7 @@ Skills commented out with @@ are from non-core sources
 
 &skill.martial.firearms 7sdd=Attack (Firearms)|Reload (Firearms)
 
-@@ &skill.martial.hand_axe 7sdd=Attack (Hand Axe).Parry (Hand Axe)|Throw (Hand Axe)
+// &skill.martial.hand_axe 7sdd=Attack (Hand Axe).Parry (Hand Axe)|Throw (Hand Axe)
 
 &skill.martial.heavy_weapon 7sdd=Attack (Heavy Weapon).Parry (Heavy Weapon)
 
@@ -499,24 +535,24 @@ Skills commented out with @@ are from non-core sources
 
 &skill.martial.rider 7sdd=Ride (*)|Animal Train.Mount.Trick Ride
 
-@@ &skill.martial.sentry 7sdd=Etiquette.Stand Watch.Unobtrusive|Ambush.Hand Signs.Menace
+// &skill.martial.sentry 7sdd=Etiquette.Stand Watch.Unobtrusive|Ambush.Hand Signs.Menace
 
-@@ &skill.martial.shield 7sdd=Parry (Shield)|Attack (Shield)
+// &skill.martial.shield 7sdd=Parry (Shield)|Attack (Shield)
 
-@@ &skill.martial.sling 7sdd=Attack (Sling)|Snapshot (Sling).Trick Shot (Sling)
+// &skill.martial.sling 7sdd=Attack (Sling)|Snapshot (Sling).Trick Shot (Sling)
 
-@@ &skill.martial.staff 7sdd=Attack (Staff).Parry (Staff)|Haymaker
+// &skill.martial.staff 7sdd=Attack (Staff).Parry (Staff)|Haymaker
 
-@@ &skill.martial.whip 7sdd=Attack (Whip)
+// &skill.martial.whip 7sdd=Attack (Whip)
 
 &skill.martial.wrestling 7sdd=Grapple|Bear Hug.Break.Escape.Head Butt
 
 
-== NATION ==============================
+// == NATION ==============================
 
 &nation 7sdd=Avalon.Castille.Eisen.Montaigne.Ussura.Vendel.Vodacce
 
-== SORCERY =============================
+// == SORCERY =============================
 
 &advantage.sorcery 7sdd=30 for half-blooded, 40 for full-blooded or twice-blooded|You have a sorcerous knack.
 &sorcery.heritage 7sdd=Glamour.Porté.Pyeryem.Laerdom.Sorte
@@ -537,9 +573,10 @@ Skills commented out with @@ are from non-core sources
 &sorcery.degree.sorte 7sdd=Apprentice.Adept.Master
 
 
-== SWORDSMAN ===========================
-
-The swordsman.<school> notation is: Free SKILLS|Fencing KNACKS.  What can ya do.
+// == SWORDSMAN ===========================
+// The swordsman.<school> notation is:
+// Free SKILLS|Fencing KNACKS.
+// What can ya do.
 
 &advantage.swordsman 7sdd=25 for your nation's school, 35 for a different nation's.|You went to swordsman school
 
@@ -565,9 +602,8 @@ The swordsman.<school> notation is: Free SKILLS|Fencing KNACKS.  What can ya do.
 &swordsman.rank.valroux 7sdd=Apprentice.Journeyman.Master
 
 
-== OTHER ADVANTAGES ====================
-
-All advantages are formatted: <cost/notes about cost>|<summary of advantage>
+// == OTHER ADVANTAGES ====================
+// All advantages are formatted: <cost/notes about cost>|<summary of advantage>
 
 &advantage.able_drinker 7sdd=1|However much you drink, liquor never effects your rolls.
 &advantage.academy 7sdd=4, 2 for Eisen|You have attended a military academy and buy Marital skills at 1 instead of 2 during character generation.
@@ -601,7 +637,7 @@ All advantages are formatted: <cost/notes about cost>|<summary of advantage>
 &advantage.university 7sdd=4, 2 for Castillian|Buy Civil skills at 1 instead of 2 at character generation
 
 
-== ARCANA ==============================
+// == ARCANA ==============================
 
 &arcana 7sdd=Fool.Magician.High Priestess.Empress.Imperator.Hierophant.Lovers.Chariot.Strength.Hermit.Fortune.Justice.Hanged Man.Death.Temperence.Legion.Tower.Star.Moon.Sun.Judgement.Terra
 
@@ -629,7 +665,7 @@ All advantages are formatted: <cost/notes about cost>|<summary of advantage>
 &spread 7sdd=If you have a sorte (tarot) spread, store it here!
 
 
-== BOOK: CASTILLE ==================================
+// == BOOK: CASTILLE ==================================
 
 @fo me=&sorcery.heritage 7sdd=[get(7sdd/sorcery.heritage)].El Fuego Adentro
 &sorcery.el_fuego_adentro 7sdd=Concentrate.Extinguish.Feed.Range.Stunt (*)
@@ -641,14 +677,14 @@ All advantages are formatted: <cost/notes about cost>|<summary of advantage>
 &swordsman.gallegos 7sdd=Athelete.Fencing|Feint (Fencing).Riposte (Fencing).Tagging (Fencing).Exploit Weakness (Gallegos)
 
 
-== BOOK: EISEN =======================================
+// == BOOK: EISEN =======================================
 
 &advantage.eisen_bodyguard 7sdd=6, 5 if Eisen|A bodyguard with an Eisen Swordsman school and 75 points.  One's loyalty only goes so far.
 
 @fo me=&swordsman.school 7sdd=[get(7sdd/swordsman.school)].Steil
 &swordsman.steil 7sdd=Commander.Courtier|Orders (*)
 
-== BOOK: AVALON =======================================
+// == BOOK: AVALON =======================================
 
 &advantage.sidhe_blade 7sdd=Varies, Avalon p. 94, 1 less with Sidhe Blood and Good Standing|Heroes of the sidhe are allowed a blade.
 
@@ -657,12 +693,12 @@ All advantages are formatted: <cost/notes about cost>|<summary of advantage>
 &advantage.sidhe_ally 7sdd=2|You have a sidhe ally. This may not bode well for you.
 
 
-== BOOK: RILASCIARE (Secret Society) ====================
+// == BOOK: RILASCIARE (Secret Society) ====================
 
 &advantage.uppmans_coat 7sdd=2|Membership (Rilasciare) only.  A coat with a hidden pocket with something hidden in it.  Page 87.
 
 
-== BOOK: PIRATE NATIONS =============================
+// == BOOK: PIRATE NATIONS =============================
 
 &skill.martial.captain 7sdd=Strategy.Tactics|Ambush.Bribery.Cartography.Diplomacy.Gunnery.Incitation.Leadership.Logistics
 
@@ -671,7 +707,9 @@ All advantages are formatted: <cost/notes about cost>|<summary of advantage>
 &advantage.syrneth_artifact_() 7sdd=Variable (Pirate Nations, p. 96)|Your character has found a syrneath artifact
 
 
-== BOOK: VENDEL/VESTEN ====================================
+// == BOOK: VENDEL/VESTEN ====================================
 
-@fo me=&swordsman.school 7sdd=[get(7sdd/swordsman.school)].Siggursdottir
+@fo me=&swordsman.school 7sdd=[get( 7sdd/swordsman.school )].Siggursdottir
 &swordsman.siggursdottir 7sdd=Athlete.Hand Axe|Double Attack (Hand Axe).Exploit Weakness (Siggursdottir).Throw (Hand Axe).Whirl (Hand Axe)
+
+*/
