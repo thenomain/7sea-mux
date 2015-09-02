@@ -37,12 +37,12 @@ Does the person have access to GM-level commands?
 */
 
 &f.sheet.find 7sss=
-	localize(
-		case( 0,
-			t( setr( p, pmatch( %0 ))), #-1 Player Not Found,
-			t( setr( l, get( %qp/_d.sheet ))), #-2 Sheet Not Found,
-			strmatch( get( %ql/d.player ), qp ),
-			#-3 Sheet Is For Different Player,
+	localize( 
+		case( 0, 
+			t( setr( p, pmatch( %0 ))), #-1 Player Not Found, 
+			t( setr( l, get( %qp/_d.sheet ))), #-2 Sheet Not Found, 
+			strmatch( get( %ql/d.player ), qp ), 
+			#-3 Sheet Is For Different Player, 
 			%ql
 		)
  	)
@@ -82,78 +82,78 @@ returns: all knacks, all knacks of that trait, all knacks matching that name, or
 */
 
 &f.list.knacks 7sss=
-	trim(
-		squish(
-			strcat(
-				u( f.knacks.skill, %0, %1 ), .,
-				u( f.knacks.swordsman, %0, %1 ), .,
+	trim( 
+		squish( 
+			strcat( 
+				u( f.knacks.skill, %0, %1 ), ., 
+				u( f.knacks.swordsman, %0, %1 ), ., 
 				u( f.knacks.sorcery, %0, %1 ), ., 
 			)
-		),
+		), 
 		b, .
  )
 
 // --
 
 &f.list.knacks.skill 7sss=
-	setunion(
-		crumple(
-			iter(
-				lattr( [u( d.7sdd )]/skill.%1* ),
-				graball( edit( get( [u( d.dd )]/%i0 ), |, . ), %0*, . ),
+	setunion( 
+		crumple( 
+			iter( 
+				lattr( [u( d.7sdd )]/skill.%1* ), 
+				graball( edit( get( [u( d.dd )]/%i0 ), |, . ), %0*, . ), 
 				, .
-			),
+			), 
 			.
-		),
+		), 
 		, .
 	)
 
 // --
 
 &f.list.knacks.swordsman 7sss=
-	setunion(
-		crumple(
-			iter(
-				lattr( [u( d.7sdd )]/swordsman.%1* ),
-				graball( rest( get( [u( d.dd )]/%i0 ), | ), %0*, . ),
+	setunion( 
+		crumple( 
+			iter( 
+				lattr( [u( d.7sdd )]/swordsman.%1* ), 
+				graball( rest( get( [u( d.dd )]/%i0 ), | ), %0*, . ), 
 				, .
-			),
+			), 
 			.
-		),
+		), 
 		, .
 	)
 
 /* (old version)
 
 &f.list.knacks.sorcery 7sss=
-	setunion(
-		graball(
-			iter(
-				if( t( %0 ),
-					grepi( [u( d.7sdd )], sorcery.%1*, %0 ),
+	setunion( 
+		graball( 
+			iter( 
+				if( t( %0 ), 
+					grepi( [u( d.7sdd )], sorcery.%1*, %0 ), 
 					lattr( [u( d.7sdd )]/sorcery.%1* )
-				),
+				), 
 				iter( %i0, u( [u( d.7sdd )]/%i0 ), , . ), , .
-			),
-			%0*,
-			.,
+			), 
+			%0*, 
+			., 
 			.
-			),
+			), 
 			, .
  		)
 
 */
 
 &f.list.knacks.sorcery 7sss=
-	setunion(
-		crumple(
-			iter(
-				lattr( [u( d.7sdd )]/sorcery.%1* ),
-				graball( get( [u( d.dd )]/%i0 ), %0*, . ),
+	setunion( 
+		crumple( 
+			iter( 
+				lattr( [u( d.7sdd )]/sorcery.%1* ), 
+				graball( get( [u( d.dd )]/%i0 ), %0*, . ), 
 				, .
-			),
+			), 
 			.
-		),
+		), 
 		, .
 	)
 
@@ -174,9 +174,9 @@ returns: list.of.stat names
 &f.list.sorcery 7sss=u( f.list.skill-and-such, %0, sorcery )
 
 &f.list.skill-and-such 7sss=
-	iter(
-		lattr( [u( d.dd )]/%1.%0* ),
-		titlestr( edit( rest( %i0, . ), _, %b )),
+	iter( 
+		lattr( [u( d.dd )]/%1.%0* ), 
+		titlestr( edit( rest( %i0, . ), _, %b )), 
 		, .
 	)
 
@@ -195,9 +195,9 @@ returns: dd statpath for matching traits
 */
 
 &f.lookup.trait-for-knack 7sss=
-	trim(
-		iter(
-			skill swordsman sorcery,
+	trim( 
+		iter( 
+			skill swordsman sorcery, 
 			lcstr( grepi( [u( d.dd )], %i0.*, %0 ))
 		)
 	)
@@ -244,24 +244,24 @@ t: type, as found
 */
 
 &f.statpath.knack 7sss=
-	strcat(
-		setq( i, before( rest( %0, %( ), % ))),
-		setq( n, trim( before( %0, ( %qi )))),
+	strcat( 
+		setq( i, before( rest( %0, %( ), % ))), 
+		setq( n, trim( before( %0, ( %qi )))), 
 
-		setq( k, u( f.list.knacks, %qn*[if( t( %qi ), %b( %qi* ))] )),
-		if(
-			cand( t( %qi ), not( t( %qk ))),
+		setq( k, u( f.list.knacks, %qn*[if( t( %qi ), %b( %qi* ))] )), 
+		if( 
+			cand( t( %qi ), not( t( %qk ))), 
 			setq( k, u( f.list.knacks, %qn*\\\\* ))
-		),
+		), 
 
-		setq( t, u( f.lookup.type-for-knack, %qk )),
+		setq( t, u( f.lookup.type-for-knack, %qk )), 
 
-		case( 0,
-			t( %qk ), #-1 Knack Not Found,
-			eq( words( %qk, . ), 1 ), #-2 Multiple Knacks Found,
-			eq( words( %qt, . ), 1 ), #-3 Multiple Types Found for Knack,
+		case( 0, 
+			t( %qk ), #-1 Knack Not Found, 
+			eq( words( %qk, . ), 1 ), #-2 Multiple Knacks Found, 
+			eq( words( %qt, . ), 1 ), #-3 Multiple Types Found for Knack, 
 			lcstr( edit( knack.%qt.[edit( %qk, *, %qi )], %b, _ ))
-		),
+		), 
 	)
 
 // --
@@ -285,12 +285,12 @@ While it may be true that all other stats are stored in an extremely simple <typ
 */
 
 &f.statpath.trait 7sss=
-	strcat(
-		setq( t, lattr( [u( d.dd )]/trait.%0* )),
+	strcat( 
+		setq( t, lattr( [u( d.dd )]/trait.%0* )), 
 
-		case( 0,
-			t( %qt ), #-1 Trait Not Found,
-			eq( words( %qt ), 1 ), #-2 Multiple Traits Found,
+		case( 0, 
+			t( %qt ), #-1 Trait Not Found, 
+			eq( words( %qt ), 1 ), #-2 Multiple Traits Found, 
 			lcstr( %qt )
 		)
 	)
@@ -311,21 +311,21 @@ That is, any but knacks.  Returns the first match on the sort order, regardless 
 */
 
 &f.statpath.first 7sss=
-	strcat(
-		setq( a,
-			if(
-				t( %1 ), lattr( [u( d.dd )]/%1.%0* ),
-				iter( u( d.sort-order ),
+	strcat( 
+		setq( a, 
+			if( 
+				t( %1 ), lattr( [u( d.dd )]/%1.%0* ), 
+				iter( u( d.sort-order ), 
 					lattr( [u( d.dd )]/%i0.%0* )
 				)
 			)
-		),
+		), 
 
-		case( 0,
-			comp( %0, ), #-1 Stat Name Not Passed,
-			t( %qa ), #-1 No Stats Found,
+		case( 0, 
+			comp( %0, ), #-1 Stat Name Not Passed, 
+			t( %qa ), #-1 No Stats Found, 
 			lcstr( first( %qa ))
-		),
+		), 
 	)
 
 // --
@@ -354,25 +354,25 @@ Finally, we should return the statpath without knowing anything about what's pas
 */
 
 &f.statpath.any 7sss=
-	localize( strcat(
-			setq( m, ),
+	localize( strcat( 
+			setq( m, ), 
 
-			case( 1,
+			case( 1, 
 // .. "stat type" passed and matches a sort-order type
-				t( match( u( d.sort-order ), %1 )),
-				u( f.statpath.first, %0, %1 ),
+				t( match( u( d.sort-order ), %1 )), 
+				u( f.statpath.first, %0, %1 ), 
 
 // .. "stat type" passed and is probably "knack"
-				strmatch( %1, k* ),
-				u( f.statpath.knack, %0 ),
+				strmatch( %1, k* ), 
+				u( f.statpath.knack, %0 ), 
 
 // .. try to find others before 'knack'.
-				t( setr( m, u( f.statpath.first, %0 ))),
-				%qm,
+				t( setr( m, u( f.statpath.first, %0 ))), 
+				%qm, 
 
 // .. last ditch effort, find the 'knack'
 				u( f.statpath.knack, %0 )
-			),
+			), 
  	))
 
 // --
@@ -397,21 +397,21 @@ qf: sheet dbref, or error message
 */
 
 &ufunc.getstat 7sss=
-	strcat(
-		setq( p, first( %0, / )),
-		setq( s, rest( %0, / )),
-		setq( p, pmatch( %qp )),
-		setq( f, u( f.sheet.find, %qp )),
+	strcat( 
+		setq( p, first( %0, / )), 
+		setq( s, rest( %0, / )), 
+		setq( p, pmatch( %qp )), 
+		setq( f, u( f.sheet.find, %qp )), 
 
-		case( 0,
+		case( 0, 
 // .. errors
-			t( %qp ), #-1 Player Not Found,
-			or( isstaff( %@ ), u( f.isgm?, %qp ), strmatch( %qp, %@ )),
-			#-1 GM or Self Only,
-			t( %qf ), %qf,
+			t( %qp ), #-1 Player Not Found, 
+			or( isstaff( %@ ), u( f.isgm?, %qp ), strmatch( %qp, %@ )), 
+			#-1 GM or Self Only, 
+			t( %qf ), %qf, 
 
 			u( f.getstat.workhorse, %qp %qs, %qf, %1 )
-		),
+		), 
 	)
 
 
@@ -426,22 +426,22 @@ Does not account for "default" stats yet.
 --
 
 0: player dbref
-1: stat name ( unchecked )
+1: stat name (unchecked)
 2: sheet dbref
-3: stat type ( unchecked )
+3: stat type (unchecked)
 
 qs: matched statpath
 
 */
 
 &f.getstat.workhorse 7sss=
-	localize( strcat(
-		setq( s, u( f.statpath.any, %1, %3 )),
+	localize( strcat( 
+		setq( s, u( f.statpath.any, %1, %3 )), 
 
-		case( 0,
-			t( %qs ), %qs,
+		case( 0, 
+			t( %qs ), %qs, 
 			get( %0/_%qs )
-		),
+		), 
  ))
 
 // ***** TEST LATER!! ******
@@ -491,135 +491,135 @@ $+roll*:@pemit %#=
 	[setq( i, %0 )]
 
 // >> SWITCHES
-	[setq( s,
-		if(
-			strmatch( %qi, /* ),
+	[setq( s, 
+		if( 
+			strmatch( %qi, /* ), 
 			[after( first( %qi ), / )][setq( i, rest( %qi ))]
 		)
 	)]
 
 // >> PEOPLE WHO WANT TO SEE THIS FUN
-	[setq( p,
-		if(
-			t( rest( %qi, = )),
-			[rest( %qi, = )] %#[setq( i, before( %qi, = ))][setq( q, private )],
+	[setq( p, 
+		if( 
+			t( rest( %qi, = )), 
+			[rest( %qi, = )] %#[setq( i, before( %qi, = ))][setq( q, private )], 
 			[lcon( loc( %# ), connect )][[setq( q, public )]]
 		)
 	)]
 
 // >> vs <target> | <player>:<trait> | 15 ( default )
-	[setq( v,
-		if(
-			t( rest( %qi, vs )),
-			[rest( %qi, vs )][setq( i, before( %qi, vs ))],
+	[setq( v, 
+		if( 
+			t( rest( %qi, vs )), 
+			[rest( %qi, vs )][setq( i, before( %qi, vs ))], 
 			15
 		)
 	)]
-	[setq( v,
-		case(
-			1,
-			and( strmatch( %qv, *:* ), isint( rest( %qv, : ))),
-			mul( rest( %qv, : ), 5 ),
+	[setq( v, 
+		case( 
+			1, 
+			and( strmatch( %qv, *:* ), isint( rest( %qv, : ))), 
+			mul( rest( %qv, : ), 5 ), 
 
-			and( strmatch( %qv, *:* ), t( setr( g, u( f.value-trait-or-knack, trim( first( %qv, : )), trim( rest( %qv, : )))))),
+			and( strmatch( %qv, *:* ), t( setr( g, u( f.value-trait-or-knack, trim( first( %qv, : )), trim( rest( %qv, : )))))), 
 			[mul( first( %qg, : ), 5 )]
-			[setq( b, [name( pmatch( trim( first( %qv, : ))))]'s [titlestr( last( %qg, . ))] )],
+			[setq( b, [name( pmatch( trim( first( %qv, : ))))]'s [titlestr( last( %qg, . ))] )], 
 
-			strmatch( %qv, *:* ),
-			0,
+			strmatch( %qv, *:* ), 
+			0, 
 
 			%qv
 		)
 	)]
 
 // >> <trait> + <knack> | <unkept>k<kept>
-	[case(
-		1,
+	[case( 
+		1, 
 
 // .. <trait> + <knack>, value or not?
-		strmatch( %qi, *+* ),
-		[setq( t,
-			case(
-				1,
-				isint( setr( t, trim( first( %qi, + )))),
-				%qt[setq( w, %qt )],
+		strmatch( %qi, *+* ), 
+		[setq( t, 
+			case( 
+				1, 
+				isint( setr( t, trim( first( %qi, + )))), 
+				%qt[setq( w, %qt )], 
 
-				not( t( setr( t, u( f.value-trait-or-knack, %#, %qt )), : )),
-				0[setq( e, rest( %qt ))],
+				not( t( setr( t, u( f.value-trait-or-knack, %#, %qt )), : )), 
+				0[setq( e, rest( %qt ))], 
 
-				t( rest( %qt, : )),
-				[first( %qt, : )][setq( w, rest( %qt, : ))],
+				t( rest( %qt, : )), 
+				[first( %qt, : )][setq( w, rest( %qt, : ))], 
 
 				0[setq( e, Unknown Failure for Trait )]
 			)
 		)]
-		[setq( n,
-			case(
-				1,
-				isint( setr( n, trim( rest( %qi, + )))),
-				%qn[setq( x, %qn )],
+		[setq( n, 
+			case( 
+				1, 
+				isint( setr( n, trim( rest( %qi, + )))), 
+				%qn[setq( x, %qn )], 
 
-				not( t( setr( n, u( f.value-trait-or-knack, %#, %qn )), : )),
-				0[setq( e, rest( %qn ))],
+				not( t( setr( n, u( f.value-trait-or-knack, %#, %qn )), : )), 
+				0[setq( e, rest( %qn ))], 
 
-				t( rest( %qn, : )),
-				[first( %qn, : )][setq( x, rest( %qn, : ))],
+				t( rest( %qn, : )), 
+				[first( %qn, : )][setq( x, rest( %qn, : ))], 
 
-				not( t( %qn )),
-				0[setq( e, rest( %qn ))],
+				not( t( %qn )), 
+				0[setq( e, rest( %qn ))], 
 
 				0[setq( e, Unknown Failure for Knack )]
 			)
 		)]
-		[setq( u, add( %qt, %qn ))][setq( k, %qt )],
+		[setq( u, add( %qt, %qn ))][setq( k, %qt )], 
 
 // .. <unkept>k<kept>, always numeric
-		strmatch( %qi, *k* ),
-		[setq( u, first( %qi, k ))][setq( k, rest( %qi, k ))],
+		strmatch( %qi, *k* ), 
+		[setq( u, first( %qi, k ))][setq( k, rest( %qi, k ))], 
 		setq( e, Unknown format )
 	)]
 
-	[if(
-		gte( %qu, 10 ),
+	[if( 
+		gte( %qu, 10 ), 
 		[setq( k, add( %qk, sub( %qu, 10 )))][setq( u, 10 )]
 	)]
 	[setq( k, min( %qu, %qk ))]
 
 // >> ROLL
-	[case(
-		1,
-		t( %qe ),
-		@@( error: don't even bother ),
-		t( match( %qs, no*, / )),
+	[case( 
+		1, 
+		t( %qe ), 
+		@@( error: don't even bother ), 
+		t( match( %qs, no*, / )), 
 		[setq( r, ulocal( f.roll.no-explode, %qu ))]
-		[setq( q, %qq no-explode )],
-		or( t( match( %qs, 0*, / )), t( match( %qs, zero*, / ))),
+		[setq( q, %qq no-explode )], 
+		or( t( match( %qs, 0*, / )), t( match( %qs, zero*, / ))), 
 		[setq( r, ulocal( f.roll.zero, %qu ))]
-		[setq( q, %qq zero-dice )],
+		[setq( q, %qq zero-dice )], 
 		setq( r, ulocal( f.roll.explode, %qu ))
 	)]
 
 	[setq( r, revwords( sort( %qr )))]
 
 // >> COMPARE
-	[case(
-		1,
-		t( %qe ),
-		@@( error: don't even bother ),
-		setq( r,
+	[case( 
+		1, 
+		t( %qe ), 
+		@@( error: don't even bother ), 
+		setq( r, 
 			[extract( %qr, 1, %qk )]|
 			[extract( %qr, inc( %qk ), words( %qr ))]
 		)
 	)]
 
 // >> ANNOUNCE
-	[case(
-		1,
-		t( %qe ), %qe,
-		[iter(
-			%qp,
-			[if(
-				pmatch( %i0 ),
+	[case( 
+		1, 
+		t( %qe ), %qe, 
+		[iter( 
+			%qp, 
+			[if( 
+				pmatch( %i0 ), 
 				setq( z, %qz [pmatch( %i0 )] )
 			)], , @@
 		)]
@@ -637,20 +637,20 @@ $+roll*:@pemit %#=
 ---
 
 &f.output.roll 7sr=
-	[header(
+	[header( 
 		[name( %# )] Rolls:
-		[if(
-			t( %qw ),
+		[if( 
+			t( %qw ), 
 			[if( isint( %qw ), %qw, titlestr( edit( last( %qw, . ), _, %b )))] +
-			[if( isint( %qx ), %qx, titlestr( edit( last( %qx, . ), _, %b )))],
+			[if( isint( %qx ), %qx, titlestr( edit( last( %qx, . ), _, %b )))], 
 			%qu k %qk
 		)] vs [if( t( %qb ), %qb, %qv )]
 	)]%r
 	%b Roll: [first( %qr, | )] [if( rest( %qr, | ), ( [ansi( xh, rest( %qr, | ))] ))]%r
 	%b [ladd( first( %qr, | ))] vs %qv :
-	[if(
-		gte( ladd( first( %qr, | )), %qv ),
-		Success,
+	[if( 
+		gte( ladd( first( %qr, | )), %qv ), 
+		Success, 
 		Failure
 	)]%r
 	[footer( iter( %qq, %i0, , %, b ))]
@@ -681,14 +681,14 @@ $+roll*:@pemit %#=
 returns: 0:<error> or <value>:<statpath>
 
 &f.value-trait-or-knack 7sr=
-localize(
+localize( 
 	[setq( 1, edit( %1, %b, _ ))]
 	[setq( s, u( [u( d.7sss )]/f.find.sheet, %0 ))]
 	[setq( p, u( [u( d.7sss )]/f.find.sheet.trait-or-knack, %qs, %q1 ))]
-	[case(
-		0,
-		t( %qs ), %qs,
-		t( %qp ), %qp,
+	[case( 
+		0, 
+		t( %qs ), %qs, 
+		t( %qp ), %qp, 
 		[u( %qs/%qp )]:%qp
 	)]
  )
@@ -750,10 +750,10 @@ The dbref of a sheet is always found via the &sheet.7s attribute on someone
 ---
 
 &f.find.sheet 7sss=
-localize(
-	case( 1,
-		not( t( setr( p, pmatch( %0 )))), #-1 Player Not Found,
-		not( t( setr( l, u( %qp/_sheet.7s )))), #-1 Sheet Not Found,
+localize( 
+	case( 1, 
+		not( t( setr( p, pmatch( %0 )))), #-1 Player Not Found, 
+		not( t( setr( l, u( %qp/_sheet.7s )))), #-1 Sheet Not Found, 
 		%ql
 	)
  )
@@ -809,31 +809,31 @@ s: the search
 
 
 &f.find.dd.knack 7sss=
-localize(
+localize( 
 	[setq( 0, edit( ucstr( %0 ), %b, _ ))]
 	[setq( g, trim( before( edit( %0, _, %b ), %( )))]
 // .. set up the search parameters
-	[if(
-		strmatch( %q0, *( * )),
+	[if( 
+		strmatch( %q0, *( * )), 
 		[setq( i, before( after( %q0, %( ), % )))]
 		[setq( k, trim( before( %q0, %( ), r, _ ))]
-		[setq( k, %qk*_( %qi* ))],
+		[setq( k, %qk*_( %qi* ))], 
 		[setq( k, %q0* )]
 	)]
 // .. basic search
-	[setq( r,
+	[setq( r, 
 		u( f.grabknacks, knack*.%qk, %qg )
 	)]
 // .. if nothing found, see if the knack is a ( * )
-	[if(
-		and( not( %qr ), strmatch( %0, *( * ))),
-		setq( r,
+	[if( 
+		and( not( %qr ), strmatch( %0, *( * ))), 
+		setq( r, 
 			u( f.grabknacks, knack*.[before( %qk, _%( )]_( \\* ))
 		)
 	)]
-	[if(
-		strmatch( %q0, *( * )),
-		edit( %qr, ( * ), ( %qi )),
+	[if( 
+		strmatch( %q0, *( * )), 
+		edit( %qr, ( * ), ( %qi )), 
 		%qr
 	)]
  )
@@ -872,13 +872,13 @@ i: instance of stat
 
 
 &f.find.dd.stat 7sss=
-localize(
+localize( 
 	[setq( 0, edit( ucstr( %0 ), %b, _ ))]
 	[setq( k, %q0 )]
 
 // .. handle instances
-	[if(
-		strmatch( %q0, *( * )),
+	[if( 
+		strmatch( %q0, *( * )), 
 		[setq( i, before( after( %q0, %( ), % )))]
 		[setq( 0, edit( %q0, _%( %qi% ), *_%( % )))]
 	)]
@@ -889,13 +889,13 @@ localize(
 	[setq( 1, setdiff( lattr( [u( d.7sdd )]/%q0* ), [lattr( [u( d.7sdd )]/%q0*.* )] %q2 %q1 ))]
 
 // .. results
-	[setq( r,
-		case(
-			1,
-			t( %q1 ), %q1,
-			t( %q2 ), %q2,
-			t( %q3 ), %q3,
-			t( setr( k, u( f.find.dd.knack, %qk ))), %qk,
+	[setq( r, 
+		case( 
+			1, 
+			t( %q1 ), %q1, 
+			t( %q2 ), %q2, 
+			t( %q3 ), %q3, 
+			t( setr( k, u( f.find.dd.knack, %qk ))), %qk, 
 			#-1 Stat Not Found in Records
 		)
 	)]
@@ -927,16 +927,16 @@ think u( 7sss/f.find.dd.stat, parry )
 ( ucstr because unicode is case-sensitive in lattr )
 
 &f.find.sheet.stat 7sss=
-localize(
+localize( 
 	[setq( u, ucstr( %1 ))]
 	[setq( 3, lattr( %0/*.*.%1* ))]
 	[setq( 2, setdiff( lattr( %0/*.%qu* ), [lattr( %0/*.%qu*.* )] %q3 ))]
 	[setq( 1, setdiff( lattr( %0/%qu* ), [lattr( %0/%qu*.* )] %q2 %q3 ))]
-	[case(
-		1,
-		t( %q1 ), %q1,
-		t( %q2 ), %q2,
-		t( %q3 ), %q3,
+	[case( 
+		1, 
+		t( %q1 ), %q1, 
+		t( %q2 ), %q2, 
+		t( %q3 ), %q3, 
 		#-1 Stat Not Found on Sheet
 	)]
  )
@@ -958,11 +958,11 @@ that's trait.<trait>, knack.civil|marital.<knack>, always found on sheet
 ( ucstr because unicode is case-sensitive in lattr )
 
 &f.find.sheet.trait-or-knack 7sss=
-localize(
-	case(
-		1,
-		t( setr( f, lattr( %0/trait.[ucstr( %1 )]* ))), %qf,
-		t( setr( f, lattr( %0/knack.*.[ucstr( %1 )]* ))), %qf,
+localize( 
+	case( 
+		1, 
+		t( setr( f, lattr( %0/trait.[ucstr( %1 )]* ))), %qf, 
+		t( setr( f, lattr( %0/knack.*.[ucstr( %1 )]* ))), %qf, 
 		#-1 Stat Not Found as Trait or Knack on Sheet
 	)
  )
@@ -985,13 +985,13 @@ think u( 7sss/f.find.sheet.trait-or-knack, #407, fletcher )
 returns: <statpath>:<whatever's on the dd>
 
 &f.aboutstat 7sss=
-localize(
-	case(
-		0,
-		t( setr( p, u( f.find.dd.stat, %0 ))),
-		%qp,
-		eq( words( %qp ), 1 ),
-		#-2 Multiple Matches: %qp,
+localize( 
+	case( 
+		0, 
+		t( setr( p, u( f.find.dd.stat, %0 ))), 
+		%qp, 
+		eq( words( %qp ), 1 ), 
+		#-2 Multiple Matches: %qp, 
 		%qp:[u( [u( d.7sdd )]/%qp )]
 	)
  )
@@ -1014,15 +1014,15 @@ think u( 7sss/f.aboutstat, parry )
 returns: <statpath>:<value>
 
 &f.getstat 7sss=
-localize(
-	case(
-		0,
-		t( setr( s, u( f.find.sheet, %0 ))),
-		%qs,
-		t( setr( p, u( f.find.sheet.stat, %qs, %1 ))),
-		%qp,
-		eq( words( %qp ), 1 ),
-		#-2 Multiple Matches,
+localize( 
+	case( 
+		0, 
+		t( setr( s, u( f.find.sheet, %0 ))), 
+		%qs, 
+		t( setr( p, u( f.find.sheet.stat, %qs, %1 ))), 
+		%qp, 
+		eq( words( %qp ), 1 ), 
+		#-2 Multiple Matches, 
 		%qp:[u( %qs/%qp )]
 	)
  )
@@ -1046,11 +1046,11 @@ a: aboutstat
 p: player's sheet
 
 &f.sheetknacks 7sss=
-localize(
-	case(
-		0,
-		t( setr( a, u( f.aboutstat, %1 ))), %qa,
-		t( setr( p, u( f.find.sheet, %0 ))), %qp,
+localize( 
+	case( 
+		0, 
+		t( setr( a, u( f.aboutstat, %1 ))), %qa, 
+		t( setr( p, u( f.find.sheet, %0 ))), %qp, 
 		[ulocal( f.sheetknacks.workhorse, %qp, %qa )]
 	)
  )
@@ -1076,11 +1076,11 @@ n: individual knack name
 // .. type
 	[setq( t, first( %1, . ))]
 // .. for each knack on the skill
-	[iter( %qk,
+	[iter( %qk, 
 // .. .. grab those that match on the sheet
 // .. .. ( instanced items with a * will match all on sheet )
-		iter(
-			lattr( %0/knack.%qt.%i0 ),
+		iter( 
+			lattr( %0/knack.%qt.%i0 ), 
 			[edit( titlestr( edit( last( %i0, . ), _, %b )), %b, _ )]:[u( %0/%i0 )]
 		), .
 	)]
@@ -1100,8 +1100,8 @@ think u( 7sss/f.sheetknacks.workhorse, #422, u( 7sss/f.aboutstat, Leegstra ))
 1: knack ( name only )
 
 &f.hasknack? 7sss=
-	or(
-		t( match( first( u( [u( d.7sdd )]/%0 ), | ), edit( %1, _, %b ), . )),
+	or( 
+		t( match( first( u( [u( d.7sdd )]/%0 ), | ), edit( %1, _, %b ), . )), 
 		t( match( rest( u( [u( d.7sdd )]/%0 ), | ), edit( %1, _, %b ), . ))
 	)
 
@@ -1120,13 +1120,13 @@ think u( 7sss/f.hasknack?, skill.martial.archer, fletcher )
 2: value to set
 
 &f.setstatpath 7sss=
-localize(
-	case(
-		0,
-		t( setr( s, u( f.find.sheet, %0 ))),
-		%qs,
-		hasattr( [u( d.7sdd )], %1 ),
-		#-1 Stat Path Does Not Exist,
+localize( 
+	case( 
+		0, 
+		t( setr( s, u( f.find.sheet, %0 ))), 
+		%qs, 
+		hasattr( [u( d.7sdd )], %1 ), 
+		#-1 Stat Path Does Not Exist, 
 // .. ok
 		[null( set( %qs, %1:%2 ))]
 		%1:[u( %qs/%1 )]
@@ -1144,13 +1144,13 @@ localize(
 2: value to set
 
 &f.setstat 7sss=
-localize(
-	case(
-		0,
-		t( setr( s, u( f.find.sheet, %0 ))),
-		%qs,
-		t( setr( a, u( f.aboutstat, %1 ))),
-		%qa,
+localize( 
+	case( 
+		0, 
+		t( setr( s, u( f.find.sheet, %0 ))), 
+		%qs, 
+		t( setr( a, u( f.aboutstat, %1 ))), 
+		%qa, 
 // .. ok -- may want to do some things with that later
 		[setq( p, first( %qa, : ))]
 		[setq( a, rest( %qa, : ))]
@@ -1170,19 +1170,19 @@ localize(
 2: value to set
 
 &f.shiftstat 7sss=
-localize(
-	case(
-		0,
-		t( setr( s, u( f.find.sheet, %0 ))),
-		%qs,
-		t( setr( p, u( f.find.dd.stat, %1 ))),
-		%qp,
-		eq( words( %qp ), 1 ),
-		#-2 Multiple Matches: %qp,
-		isint( %2 ),
-		#-1 Shift Must Be Numeric,
-		or( isint( setr( v, u( %qs/%qp ))), not( comp( %qv, ))),
-		#-1 Stat Shifted Must Be Numeric or Null,
+localize( 
+	case( 
+		0, 
+		t( setr( s, u( f.find.sheet, %0 ))), 
+		%qs, 
+		t( setr( p, u( f.find.dd.stat, %1 ))), 
+		%qp, 
+		eq( words( %qp ), 1 ), 
+		#-2 Multiple Matches: %qp, 
+		isint( %2 ), 
+		#-1 Shift Must Be Numeric, 
+		or( isint( setr( v, u( %qs/%qp ))), not( comp( %qv, ))), 
+		#-1 Stat Shifted Must Be Numeric or Null, 
 // .. ok
 		[null( set( %qs, %qp:[add( %2, %qv )] ))]
 		%qp:[u( %qs/%qp )]
@@ -1205,25 +1205,25 @@ qr: return from shiftstat, setstatpath, or setstat
 ---
 
 &c.set 7sss=$\+set ( .+? )/( .+? )( [+\-=] )( .* ):@pemit %#=
-if(
-	not( u( f.isgm?, %# )),
-	Error: You're not a 7th Seas GM!,
+if( 
+	not( u( f.isgm?, %# )), 
+	Error: You're not a 7th Seas GM!, 
 
 	[setq( p, pmatch( trim( %1 )))]
 	[setq( s, ucstr( edit( trim( %2 ), %b, _ )))]
 	[setq( o, trim( %3 ))]
 	[setq( v, trim( %4 ))]
 
-	[setq( r,
-		case( 1,
-			t( match( + -, %qo )), u( f.shiftstat, %qp, %qs, %qo%qv ),
-			t( setr( r, u( f.setstatpath, %qp, %qs, %qv ))), %qr,
+	[setq( r, 
+		case( 1, 
+			t( match( + -, %qo )), u( f.shiftstat, %qp, %qs, %qo%qv ), 
+			t( setr( r, u( f.setstatpath, %qp, %qs, %qv ))), %qr, 
 			u( f.setstat, %qp, %qs, %qv )
 		)
 	)]
 
-	[if(
-		not( t( %qr )), Error: [rest( %qr )],
+	[if( 
+		not( t( %qr )), Error: [rest( %qr )], 
 		Set [name( %qp )]'s
 		[edit( edit( titlestr( edit( edit( first( %qr, : ), ., %b.%b ), _, %b )), %b.%b, . ), %b, _ )]
 		to [u( [u( f.find.sheet, %qp )]/[first( %qr, : )] )]
@@ -1245,82 +1245,82 @@ if(
 	[setq( r, u( f.aboutstat, edit( %0, %b, _ )))]
 	[setq( s, edit( first( %qr, : ), _, %b ))]
 	[setq( a, rest( %qr, : ))]
-	[if(
-		not( t( %qr )), Error: [rest( %qr )],
+	[if( 
+		not( t( %qr )), Error: [rest( %qr )], 
 
-		[setq( m,
+		[setq( m, 
 		)]
 
-		[setq( m,
-			case( 1,
+		[setq( m, 
+			case( 1, 
 
 // .. arcana
-				strmatch( %qs, arcana.arcana ),
-				Arcana|If you represent a major arcana it would be one of these: [itemize( %qa, . )],
+				strmatch( %qs, arcana.arcana ), 
+				Arcana|If you represent a major arcana it would be one of these: [itemize( %qa, . )], 
 
-				strmatch( %qs, arcana.* ),
-				[rest( %qs, . )] Arcana|If you have a [lcstr( rest( %qs, . ))] it would be one of these: [itemize( %qa, . )],
+				strmatch( %qs, arcana.* ), 
+				[rest( %qs, . )] Arcana|If you have a [lcstr( rest( %qs, . ))] it would be one of these: [itemize( %qa, . )], 
 
 // .. background
-				strmatch( %qs, bio.background ),
-				Background|If you have a mysterious past it would be one of these: [itemize( %qa, . )],
+				strmatch( %qs, bio.background ), 
+				Background|If you have a mysterious past it would be one of these: [itemize( %qa, . )], 
 
 // .. nation
-				strmatch( %qs, bio.nation ),
-				Nation|You're from one of these nations: [itemize( %qa, . )],
+				strmatch( %qs, bio.nation ), 
+				Nation|You're from one of these nations: [itemize( %qa, . )], 
 
 // .. trait
-				strmatch( %qs, trait.* ),
-				[extract( %qs, 2, 1, . )]|A trait%, numeric%, determines how many dice you keep after a roll.,
+				strmatch( %qs, trait.* ), 
+				[extract( %qs, 2, 1, . )]|A trait%, numeric%, determines how many dice you keep after a roll., 
 
 // .. sorcery
-				strmatch( %qs, bio.heritage ),
-				Sorcerous Heritage|National types of sorcery you have: [itemize( %qa, . )],
+				strmatch( %qs, bio.heritage ), 
+				Sorcerous Heritage|National types of sorcery you have: [itemize( %qa, . )], 
 
-				strmatch( %qs, bio.sorcerous_blood ),
-				[edit( last( %qs, . ), _, %b )]|The nature of your sorcerous blood: [itemize( %qa, . )],
+				strmatch( %qs, bio.sorcerous_blood ), 
+				[edit( last( %qs, . ), _, %b )]|The nature of your sorcerous blood: [itemize( %qa, . )], 
 
-				strmatch( %qs, sorcery.* ),
-				Knacks for [last( %qs, . )]|[itemize( %qa, . )]|( This stat itself can be set with any information you think is useful. ),
+				strmatch( %qs, sorcery.* ), 
+				Knacks for [last( %qs, . )]|[itemize( %qa, . )]|( This stat itself can be set with any information you think is useful. ), 
 
 // .. swordsman
-				strmatch( %qs, bio.school ),
-				Swordsman School|Schools of swordsmanship you know: [itemize( %qa, . )],
+				strmatch( %qs, bio.school ), 
+				Swordsman School|Schools of swordsmanship you know: [itemize( %qa, . )], 
 
-				strmatch( %qs, swordsman.* ),
-				Skills & Knacks for [last( %qs, . )]|Skills Learned: [itemize( first( %qa, | ), . )]|Swordsman Knacks: [itemize( rest( %qa, | ), . )]||( This stat itself can be set with any information you think is useful. ),
+				strmatch( %qs, swordsman.* ), 
+				Skills & Knacks for [last( %qs, . )]|Skills Learned: [itemize( first( %qa, | ), . )]|Swordsman Knacks: [itemize( rest( %qa, | ), . )]||( This stat itself can be set with any information you think is useful. ), 
 
 // .. other "bio" stats
-				strmatch( %qs, bio.* ),
-				[%qs]|A simple stat for keeping track of things.,
+				strmatch( %qs, bio.* ), 
+				[%qs]|A simple stat for keeping track of things., 
 
 // .. skill
-				strmatch( %qs, skill.* ),
-				[last( %qs, . )]: [itemize( get( v( d.7sdd )/tags.%qs ), ., & )] Skill|Basic Knacks: [itemize( first( %qa, | ), . )]|Advanced Knacks: [itemize( rest( %qa, | ), . )]|( This stat itself can be set with any information you think is useful. ),
+				strmatch( %qs, skill.* ), 
+				[last( %qs, . )]: [itemize( get( v( d.7sdd )/tags.%qs ), ., & )] Skill|Basic Knacks: [itemize( first( %qa, | ), . )]|Advanced Knacks: [itemize( rest( %qa, | ), . )]|( This stat itself can be set with any information you think is useful. ), 
 
 // .. knack ( check only skill, swordsman and sorcery )
-				strmatch( %qs, knack.*.* ),
-				[last( %qs, . )]: [extract( %qs, 2, 1, . )] Knack|Knacks are set depending on the skills%, swordsman schools%, or sorcery heritages you have.|This one belongs to: [titlestr( itemize( iter(
+				strmatch( %qs, knack.*.* ), 
+				[last( %qs, . )]: [extract( %qs, 2, 1, . )] Knack|Knacks are set depending on the skills%, swordsman schools%, or sorcery heritages you have.|This one belongs to: [titlestr( itemize( iter( 
 
-				filter(
-					f.hasknack?,
+				filter( 
+					f.hasknack?, 
 					[u( d.skill )]
-					[u( d.sorcery )] [u( d.swordsman )], , ,
+					[u( d.sorcery )] [u( d.swordsman )], , , 
 					last( %qs, . )
-				),
+				), 
 
-				rest( %i0, . ), , | ), | ))].,
+				rest( %i0, . ), , | ), | ))]., 
 
 // .. advantage
-				strmatch( %qs, advantage.* ),
-				[rest( %qs, . )]|Cost: [first( %qa, | )]|[rest( %qa, | )],
+				strmatch( %qs, advantage.* ), 
+				[rest( %qs, . )]|Cost: [first( %qa, | )]|[rest( %qa, | )], 
 
 // .. wounds
-				strmatch( %qs, wounds.flesh ),
-				Flesh Wounds|These wounds determine if you get a Dramatic wound and are erased at the end of a scene.,
+				strmatch( %qs, wounds.flesh ), 
+				Flesh Wounds|These wounds determine if you get a Dramatic wound and are erased at the end of a scene., 
 
-				strmatch( %qs, wounds.dramatic ),
-				Dramatic Wounds|These wounds hurt. If you have as many as your Resolve trait you no longer re-roll tens. If you have as many as twice your Resolve you're unconscious.,
+				strmatch( %qs, wounds.dramatic ), 
+				Dramatic Wounds|These wounds hurt. If you have as many as your Resolve trait you no longer re-roll tens. If you have as many as twice your Resolve you're unconscious., 
 
 // .. random other
 				Huh?|I'm so confused.
@@ -1329,17 +1329,17 @@ if(
 
 // >> output
 		[header( titlestr( edit( first( %qm, | ), _, %b )))]%r
-		[iter(
-			rest( %qm, | ),
+		[iter( 
+			rest( %qm, | ), 
 // .. if <title>: <info>, make it pretty
-			if( strmatch( %i0, *: * ),
+			if( strmatch( %i0, *: * ), 
 
 				[divider( before( %i0, : ))]%r
-				[wrap( trim( rest( %i0, : )), 76, left, %b%b )],
+				[wrap( trim( rest( %i0, : )), 76, left, %b%b )], 
 
 				wrap( %i0, 76, left, %b%b )
-			),
-			|,
+			), 
+			|, 
 			%r%r
 		)]%r
 		[footer( )]
