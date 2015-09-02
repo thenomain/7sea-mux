@@ -6,11 +6,20 @@ OBJECTS:
 ================================================================================
 == Various Formatting Items ====================================================
 
+Core ANSI for the sheet is here.
+
 %0: dbref of sheet
 %1: dbref of player
 */
 
-&F.TINYHEADER 7sss=center( %b[ansi( h, if( comp( %0,  ), %0, u( d.dash )))]%b, %1, u( d.dash ))
+&F.TINYHEADER 7sss=
+	center( 
+		ansi( n, %b, h, if( strmatch( %0, ), u( d.dash ), %0 ), n, %b ), 
+		%1, u( d.dash )
+	)
+
+&f.longheader 7sss=
+	ansi( c, ----, nh, %b%0%b, c, repeat( -, %1 ))
 
 &D.DIV 7sss=ansi( c, %b|%b )
 
@@ -403,7 +412,7 @@ s: sheet dbref
 
 // .. Traits, Character Information
 		%b, u( f.tinyheader, Traits, 16 ), 
-		%b, ansi( c, ----, nh, %bCharacter Information%b, c, repeat( -, 33 )), 
+		%b, u( f.longheader, Character Information, 33 ), 
 		%r, 
 
 		vcolumns( 
